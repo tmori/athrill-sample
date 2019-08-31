@@ -54,11 +54,7 @@
 #define TAA3OPT1				UINT_C(0xFFFFF5CD)
 #define TAA6OPT1				UINT_C(0xFFFFF5FD)
 
-static void timer_interrupt_handler(void)
-{
-	printf("timer_interrupt_handler!!\n");
-	return;
-}
+extern void timer_interrupt_handler(void);
 static void serial_interrupt_handler(void)
 {
 	printf("serial_interrupt_handler!!\n");

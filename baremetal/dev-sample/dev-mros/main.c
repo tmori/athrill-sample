@@ -6,19 +6,49 @@
 #include "timer.h"
 #include "v850_ins.h"
 #include <stdlib.h>
+#include "can.h"
+#include "device_io.h"
 
 unsigned char stack_data[STACK_SIZE] __attribute__ ((section(".bss_noclr")));
 
-int global_value = 0;
+void timer_interrupt_handler(void)
+{
+	uint8 c;
+	int i;
+	/*
+	 * send can data:CANID 0x100
+	 */
+	sil_wrb_mem((void*)(VCAN_TX_FLAG(0) + 0), 1);
+
+	/*
+	 * read can data:CANID 0x400
+	 */
+	test_print("RECV CAN_DATA:");
+	for (i = 0; i < 8; i++) {
+		c = sil_reb_mem((void*)(VCAN_RX_DATA_0(0) + i)));
+		test_print_one((const char*)&c);
+	}
+	c = '\n';
+	test_print_one((const char*)&c);
+	return;
+}
+
 
 int main(void)
 {
 	timer_init();
 
-	global_value = atoi("111");
+	timer_start(10000U);
 
-	printf("Hello World!!\n");
-	timer_start(10U);
+	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 0), 'H');
+	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 1), 'e');
+	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 2), 'l');
+	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 3), 'l');
+	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 0), 'o');
+	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 1), '!');
+	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 2), '!');
+	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 3), '!');
+
 
 	while (1) {
 		do_idle();
