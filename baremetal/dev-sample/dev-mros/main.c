@@ -11,10 +11,12 @@
 
 unsigned char stack_data[STACK_SIZE] __attribute__ ((section(".bss_noclr")));
 
+static const char *sample_publish_data = "Hello World!!";
+static char subscribe_buffer0[1024];
+
 void timer_interrupt_handler(void)
 {
-	uint8 c;
-	int i;
+	uint8 is_rcv = 0;
 	/*
 	 * send can data:CANID 0x100
 	 */
@@ -23,31 +25,30 @@ void timer_interrupt_handler(void)
 	/*
 	 * read can data:CANID 0x400
 	 */
-	test_print("RECV CAN_DATA:");
-	for (i = 0; i < 8; i++) {
-		c = sil_reb_mem((void*)(VCAN_RX_DATA_0(0) + i)));
-		test_print_one((const char*)&c);
+	is_rcv = sil_reb_mem((void*)(VCAN_RX_FLAG(0)));
+	if (is_rcv != 0) {
+		test_print("RECV CAN_DATA:");
+		test_print(subscribe_buffer0);
+		test_print_one("\n");
+		sil_wrb_mem((void*)(VCAN_RX_FLAG(0)), 0);
 	}
-	c = '\n';
-	test_print_one((const char*)&c);
+	
 	return;
 }
 
 
 int main(void)
 {
+	int datalen = strlen(sample_publish_data);
 	timer_init();
 
 	timer_start(10000U);
 
-	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 0), 'H');
-	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 1), 'e');
-	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 2), 'l');
-	sil_wrb_mem((void*)(VCAN_TX_DATA_0(0) + 3), 'l');
-	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 0), 'o');
-	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 1), '!');
-	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 2), '!');
-	sil_wrb_mem((void*)(VCAN_TX_DATA_1(0) + 3), '!');
+	sil_wrw_mem((void*)(VCAN_TX_DATA_0(0)), (uint32)sample_publish_data);
+	sil_wrw_mem((void*)(VCAN_TX_DATA_1(0)), datalen);
+
+	sil_wrw_mem((void*)(VCAN_RX_DATA_0(0)), (uint32)subscribe_buffer0);
+	sil_wrw_mem((void*)(VCAN_RX_DATA_1(0)), sizeof(subscribe_buffer0));
 
 
 	while (1) {
