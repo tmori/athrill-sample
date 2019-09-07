@@ -1,0 +1,284 @@
+<script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+
+
+<script>
+  const ros =  new ROSLIB.Ros({
+      url: 'ws://localhost:9090'
+  });
+
+  ros.on('connection', () => {
+      console.log('Connected to websocket server');
+  });
+
+  ros.on('error', error =>{
+      console.log('Error connecting to websocket server: ', error);
+  });
+
+  ros.on('close', () => {
+      console.log("Connection to websocket server was closed");
+  });
+  const listener_pose = new ROSLIB.Topic({
+   ros : ros,
+   name : '/pose',
+   messageType : 'std_msgs/String'
+  });
+  const listener_stearing = new ROSLIB.Topic({
+   ros : ros,
+   name : '/stearing',
+   messageType : 'std_msgs/String'
+  });
+  const listener_speed = new ROSLIB.Topic({
+   ros : ros,
+   name : '/speed',
+   messageType : 'std_msgs/String'
+  });
+  const listener_obstacle = new ROSLIB.Topic({
+   ros : ros,
+   name : '/obstacle',
+   messageType : 'std_msgs/String'
+  });
+  const listener_line_sensor = new ROSLIB.Topic({
+   ros : ros,
+   name : '/line_sensor',
+   messageType : 'std_msgs/String'
+  });
+  const listener_control_motor_torque = new ROSLIB.Topic({
+   ros : ros,
+   name : '/control_motor_torque',
+   messageType : 'std_msgs/String'
+  });
+  const listener_control_stearing = new ROSLIB.Topic({
+   ros : ros,
+   name : '/control_stearing',
+   messageType : 'std_msgs/String'
+  });
+  const listener_control_brake = new ROSLIB.Topic({
+   ros : ros,
+   name : '/control_brake',
+   messageType : 'std_msgs/String'
+  });
+
+  listener_pose.subscribe(message => {
+    var mybox = document.getElementById("pose");
+    mybox.value = message.data;
+  });
+
+  var value_stearing;
+  listener_stearing.subscribe(message => {
+    var mybox = document.getElementById("stearing");
+    mybox.value = message.data;
+    value_stearing = message.data.split("=")[1].split(":")[0];
+  });
+  listener_speed.subscribe(message => {
+    var mybox = document.getElementById("speed");
+    mybox.value = message.data;
+  });
+  listener_obstacle.subscribe(message => {
+    var mybox = document.getElementById("obstacle");
+    mybox.value = message.data;
+  });
+  listener_line_sensor.subscribe(message => {
+    var mybox = document.getElementById("line_sensor");
+    mybox.value = message.data;
+  });
+  listener_control_motor_torque.subscribe(message => {
+    var mybox = document.getElementById("control_motor_torque");
+    mybox.value = message.data;
+  });
+  listener_control_stearing.subscribe(message => {
+    var mybox = document.getElementById("control_stearing");
+    mybox.value = message.data;
+  });
+  listener_control_brake.subscribe(message => {
+    var mybox = document.getElementById("control_brake");
+    mybox.value = message.data;
+  });
+
+</script>
+<style>
+table.tabletest {
+  border: 1px solid #333;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+
+table.tabletest th {
+  background-color: #bde9ba;
+  border: 1px solid #333;
+}
+table.tabletest td {
+  border: 1px solid #333;
+}
+</style>
+<html>
+  <body>
+     
+    <table boader="1" class="tabletest">
+          <tr>
+            <th>topic</th>
+            <th>value</th>
+          </tr>
+          <tr>
+              <td>/pose</td>
+              <td><output type="text" id = "pose" value="none"></td>
+            </tr>
+            <tr>
+              <td>/speed</td>
+              <td><output type="text" id = "speed" value="none"></td>
+            </tr>
+            <tr>
+              <td>/stearing</td>
+              <td><output type="text" id = "stearing" value="none"></td>
+            </tr>
+            <tr>
+              <td>/obstacle</td>
+              <td><output type="text" id = "obstacle" value="none"></td>
+            </tr>
+            <tr>
+              <td>/line_sensor</td>
+              <td><output type="text" id = "line_sensor" value="none"></td>
+            </tr>
+            <tr>
+              <td>/control_motor_torque</td>
+              <td><output type="text" id = "control_motor_torque" value="none"></td>
+            </tr>
+            <tr>
+              <td>/control_brake</td>
+              <td><output type="text" id = "control_brake" value="none"></td>
+            </tr>
+            <tr>
+              <td>/control_stearing</td>
+              <td><output type="text" id = "control_stearing" value="none">
+              </td>
+            </tr>
+
+    </table>
+
+    <br>
+
+    <table boader="1" class="tabletest">
+      <tr>
+        <th>
+          operation
+        </th>
+        <th>
+          button
+        </th>
+        </tr>
+      <tr>
+        <td>stop</td>
+        <td>
+            <input type ="button" id = "stop" value="stop">
+        </td>
+      </tr>
+      <tr>
+        <td>unlock_stop</td>
+        <td>
+          <input type ="button" id = "unlock_stop" value="unlock_stop">
+        </td>
+      </tr>
+      <tr>
+        <td>foward</td>
+        <td>
+          <input type ="button" id = "foward" value="foward">
+        </td>
+      </tr>
+
+      <tr>
+        <td>stearing</td>
+        <td>
+            <input type ="button" id = "stear_left" value="left">
+            <input type ="button" id = "stear_right" value="right">
+          </td>
+      </tr>
+      <tr>
+        <td>back</td>
+        <td>
+          <input type ="button" id = "back" value="back">
+        </td>
+      </tr>
+
+    </table>
+
+    <script>
+      const pub_brake = new ROSLIB.Topic({
+          ros : ros,
+          name : '/control_brake',
+          messageType : 'std_msgs/String'
+      });
+      const pub_motor = new ROSLIB.Topic({
+          ros : ros,
+          name : '/control_motor_torque',
+          messageType : 'std_msgs/String'
+      });
+        var mybox_stop = document.getElementById("stop");
+        var mybox_back = document.getElementById("back");
+        var mybox_foward = document.getElementById("foward");
+        var mybox_unlock_stop = document.getElementById("unlock_stop");
+        function stop_event() {
+          brake_msg = new ROSLIB.Message({
+            data : 'value=1'
+          });
+          motor_msg = new ROSLIB.Message({
+            data : 'value=0'
+          });
+          pub_brake.publish(brake_msg);
+          pub_motor.publish(motor_msg);
+        }
+        function unlock_stop_event() {
+          brake_msg = new ROSLIB.Message({
+            data : 'value=0'
+          });
+          pub_brake.publish(brake_msg);
+        }
+        function back_event() {
+          back_msg = new ROSLIB.Message({
+            data : 'value=-30'
+          });
+          pub_motor.publish(back_msg);
+        }
+        function foward_event() {
+          foward_msg = new ROSLIB.Message({
+            data : 'value=30'
+          });
+          pub_motor.publish(foward_msg);
+        }
+
+        mybox_stop.addEventListener("click",stop_event);
+        mybox_unlock_stop.addEventListener("click", unlock_stop_event);
+        mybox_foward.addEventListener("click", foward_event);
+        mybox_back.addEventListener("click", back_event);
+     </script>
+
+    <script>
+      const pub_stearing = new ROSLIB.Topic({
+          ros : ros,
+          name : '/control_stearing',
+          messageType : 'std_msgs/String'
+      });
+        var mybox = document.getElementById("stear_left");
+        function stear_left_event() {
+          var value = Number(value_stearing);
+          value-=5;
+          pub_stearing.publish({
+            data : "value=" + value
+          });
+        }
+        mybox.addEventListener("click",stear_left_event);
+     </script>
+    <script>
+        var mybox = document.getElementById("stear_right");
+        function stear_right_event() {
+          var value = Number(value_stearing);
+          value+=5;
+          pub_stearing.publish({
+            data : "value=" + value
+          });
+        }
+        mybox.addEventListener("click",stear_right_event);
+     </script>
+
+  </body>
+</html>
