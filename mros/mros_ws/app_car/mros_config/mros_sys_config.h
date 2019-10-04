@@ -19,14 +19,23 @@ extern "C" {
  */
 #define MROS_MASTER_PORT_NO						11311
 /*
+ * dhcp option of self node(0:not use, 1:use)
+ */
+#define MROS_NODE_USE_DHCP 						0
+/*
  * ipaddr of master
  */
-#define MROS_MASTER_IPADDR						"0.0.0.0"
+#define MROS_MASTER_IPADDR						"172.16.80.22"
 
 /*
  * ipaddr of self node
  */
-#define MROS_NODE_IPADDR						"127.0.0.1"
+#define MROS_NODE_IPADDR						"172.16.80.39"
+
+/*
+ * subnet mask of self node
+ */
+#define MROS_NODE_SUBNET_MASK					"255.255.255.0"
 
 /*
  * portno of slave
@@ -37,11 +46,6 @@ extern "C" {
  * portno of pub
  */
 #define MROS_PUBLISHER_PORT_NO					11511
-
-/*
- * uri of mROS slave
- */
-#define MROS_URI_SLAVE							"http://127.0.0.1:11411"
 
 /*
  * do not change this parameter

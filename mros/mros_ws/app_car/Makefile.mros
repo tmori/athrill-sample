@@ -6,7 +6,7 @@ PRJROOT_MROS=$(MROS_LIB_DIR)/mros-lib
 PRJROOT_ASP=../../../../mros/asp-athrill-mbed/asp-athrill
 SRC_ROOT=$(MROS_LIB_DIR)/mros-lib/mros-src
 MROS_MSG_DIR=$(MROS_LIB_DIR)/mros-lib/mros-msgs
-APL_DIR=../mros_ws/app
+APL_DIR=.
 
 ROS_VERSION	:= kinetic
 
@@ -43,8 +43,6 @@ IFLAGS	+= -I$(PRJROOT_ASP)/arch/v850_gcc
 IFLAGS	+= -I$(ATHRILL_ROOT)/trunk/apl/include
 
 IFLAGS	+= -I$(SRC_ROOT)/inc
-IFLAGS	+= -I$(SRC_ROOT)/config
-IFLAGS	+= -I$(SRC_ROOT)/config/os/target/os_asp
 IFLAGS	+= -I$(SRC_ROOT)/api
 IFLAGS	+= -I$(SRC_ROOT)/protocol/cimpl
 IFLAGS	+= -I$(SRC_ROOT)/node/cimpl
@@ -59,6 +57,8 @@ IFLAGS	+= -I$(SRC_ROOT)/protocol/cimpl
 IFLAGS	+= -I$(SRC_ROOT)/transfer/cimpl
 IFLAGS	+= -I$(MROS_MSG_DIR)
 IFLAGS	+= -I$(APL_DIR)/include
+IFLAGS	+= -I$(APL_DIR)/mros_config
+IFLAGS	+= -I$(APL_DIR)/mros_config/os/target/os_asp
 
 CXX_OBJ += ros.o
 CXX_OBJ += mros_comm_cimpl.o
@@ -87,9 +87,6 @@ CXX_OBJ += mros_topic_cimpl.o
 CXX_OBJ += mros_topic_connector_cimpl.o
 CXX_OBJ += mros_topic_connector_factory_cimpl.o
 CXX_OBJ += mros_name.o
-CXX_OBJ += mros_os_config.o
-CXX_OBJ += mros_usr_config.o
-CXX_OBJ += mros_sys_config.o
 
 OBJS	:= $(C_OBJ) $(CXX_OBJ)
 

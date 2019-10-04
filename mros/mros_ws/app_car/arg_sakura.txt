@@ -1,2 +1,2 @@
--l 24 ./kernel_cfg_asm.S
+-l 397 ../../../../mros/asp-athrill-mbed/asp-athrill/arch/v850_gcc/prc_support.S
 

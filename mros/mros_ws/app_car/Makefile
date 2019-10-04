@@ -65,6 +65,8 @@ endif
 #
 SRCDIR = ../../../../mros/asp-athrill-mbed/asp-athrill
 MROS_LIB_DIR=../../../../fork/mROS/mros-lib
+MROS_SRC_DIR=$(MROS_LIB_DIR)/mros-src
+ROS_VERSION	:= kinetic
 
 #
 #  オブジェクトファイル名の拡張子の設定
@@ -143,7 +145,32 @@ ifndef OMIT_OPTIMIZATION
   COPTS := $(COPTS) -O2
 endif
 CDEFS := $(CDEFS) 
-INCLUDES := -I. -I./include -I$(SRCDIR)/include -I$(SRCDIR)/arch -I$(SRCDIR) -I$(MROS_LIB_DIR)/mros-src/api -I$(MROS_LIB_DIR)/mros-src/os/target/os_asp -I$(MROS_LIB_DIR)/mros-msgs $(INCLUDES)
+
+IFLAGS	:= -I$(MROS_SRC_DIR)/inc
+IFLAGS	+= -I$(MROS_SRC_DIR)/api
+IFLAGS	+= -I$(MROS_SRC_DIR)/protocol/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/node/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/topic/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/os/target/os_asp
+IFLAGS	+= -I$(MROS_SRC_DIR)/comm/cimpl/target/lwip
+IFLAGS	+= -I$(MROS_SRC_DIR)/comm/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/packet/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/packet/template/version/$(ROS_VERSION)
+IFLAGS	+= -I$(MROS_SRC_DIR)/packet/cimpl/version/$(ROS_VERSION)
+IFLAGS	+= -I$(MROS_SRC_DIR)/protocol/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/transfer/cimpl
+IFLAGS += -I$(MROS_LIB_DIR)/mros-msgs
+
+
+INCLUDES := -I. -I./include -I$(SRCDIR)/include 
+INCLUDES += -I$(SRCDIR)/arch -I$(SRCDIR) -I$(MROS_LIB_DIR)/mros-src/inc 
+INCLUDES	+= -I$(SRCDIR)
+INCLUDES	+= -I$(SRCDIR)/include
+INCLUDES	+= -I$(SRCDIR)/kernel
+INCLUDES	+= -I$(SRCDIR)/target/v850_gcc
+INCLUDES	+= -I$(SRCDIR)/arch
+INCLUDES	+= -I$(SRCDIR)/arch/v850_gcc
+INCLUDES 	+= $(IFLAGS)
 LDFLAGS := $(LDFLAGS) 
 CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS) 
 LIBS := $(LIBS) $(CXXLIBS)
@@ -153,7 +180,7 @@ CFLAGS = $(COPTS) $(CDEFS) $(INCLUDES)
 #  アプリケーションプログラムに関する定義
 #
 APPLNAME = app
-APPLDIR = 
+APPLDIR = mros_config mros_config/os/target/os_asp
 APPL_CFG = $(APPLNAME).cfg
 USE_CXX = true
 
@@ -165,7 +192,7 @@ ifdef USE_CXX
 else
   APPL_COBJS = $(APPLNAME).o 
 endif
-APPL_COBJS := $(APPL_COBJS) log_output.o vasyslog.o t_perror.o strerror.o
+APPL_COBJS := $(APPL_COBJS) mros_sys_config.o mros_usr_config.o mros_os_config.o log_output.o vasyslog.o t_perror.o strerror.o
 MBED_LIB_DIR = ../../../../mros/asp-athrill-mbed/mbed-lib
 APPL_CFLAGS = -I$(MBED_LIB_DIR)/mbed-src/api
 APPL_CFLAGS += -I$(MBED_LIB_DIR)/EthernetInterface
@@ -177,7 +204,7 @@ APPL_CFLAGS += -I$(MBED_LIB_DIR)/EthernetInterface/lwip/include/ipv4
 APPL_CFLAGS += -I$(MBED_LIB_DIR)/EthernetInterface/lwip-athrill/include
 APPL_CFLAGS += -DTARGET_ATHRILL
 APPL_CFLAGS += -DLWIP_TRANSPORT_ETHERNET
-APPL_LIBS = -Wl,--gc-sections -nostartfiles -L. -lmros -lmbed -lnosys
+APPL_LIBS = -Wl,--gc-sections -nostartfiles libmros.a libmbed.a -lnosys
 ifdef APPLDIR
   INCLUDES := $(INCLUDES) $(foreach dir,$(APPLDIR),-I$(dir))
 endif
