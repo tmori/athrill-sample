@@ -43,5 +43,4 @@ MROS_MEMORY_CONFIG_DECLARE_MANAGER(ros_outer_topic_publisher_mempool, ROS_OUTER_
 
 mRosTaskIdType mros_usr_task_table[MROS_USR_TASK_NUM] = {
 	USR_TASK1,
-	USR_TASK2,
 };

@@ -37,7 +37,6 @@ extern void cyclic_handler(intptr_t exinf);
  * following config parameter is an example.
  */
 #define MROS_USR_TASK1_PRI  	9
-#define MROS_USR_TASK2_PRI  	9
 /*8
  * user task max priority8
  *8
