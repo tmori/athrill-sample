@@ -17,106 +17,51 @@ unsigned int athrill_device_func_call __attribute__ ((section(".athrill_device_s
 
 typedef struct {
 	struct {
-		int x;
-		int z;
+		unsigned int x;
+		unsigned int y;
 	} pos;
 	struct {
-		int left;
-		int right;
+		unsigned int left;
 	} stear;
 	struct {
-		int left;
-		int right;
+		unsigned int left;
 	} rpm;
 	struct {
-		int found;
-		int distance;
-		int angle;
+		unsigned int found;
+		unsigned int distance;
+		unsigned int angle;
 	} obstacle;
 	struct {
-		int light;
+		unsigned int light;
 	} line_sensor;
 } SensorInfoType;
 static SensorInfoType car_sensor;
 
 /*****mROS user task code*******/
 
-static char str_buf[256];
+static char str_buf[1024];
 #define ARG_NUM	3
 typedef struct {
 	int argc;
-	char *fmt[ARG_NUM];
-	int argv[ARG_NUM];
+	unsigned int argv[ARG_NUM];
 } PubDataArgType;
 static void create_pub_data(char *ptr, PubDataArgType *argp)
 {
 	if (argp->argc == 1) {
-		sprintf(ptr, "%s=%u", argp->fmt[0], argp->argv[0]);
+		sprintf(ptr, "%u", argp->argv[0]);
 	}
 	else {
-		sprintf(ptr, "%s=%u:%s=%u", argp->fmt[0], argp->argv[0], argp->fmt[1], argp->argv[1]);
+		sprintf(ptr, "%u:%u",  argp->argv[0], argp->argv[1]);
 	}
 	return;
 }
 
-static char *parse_sub_data(char *ptr, int *valuep)
-{
-	char *p = ptr;
-	char *vp = NULL;
-	//find found =
-	while (vp == NULL) {
-		switch ((*p)) {
-		case '\0':
-			return NULL;
-		case '=':
-			p++;
-			vp = p;
-			break;
-		default:
-			p++;
-		}
-	}
-
-	//find : or \0
-	while ((*p) != '\0') {
-		if ((*p) == ':') {
-			*p = '\0';
-			p++;
-			break;
-		}
-		p++;
-	}
-	*valuep = atoi(vp);
-	return p;
-}
-
-/*******  callback **********/
-static void read_sub_data(char *ptr, PubDataArgType *argp)
-{
-	int i;
-	char *p;
-	argp->argv[0] = 0;
-	argp->argv[1] = 0;
-	argp->argv[2] = 0;
-
-
-	p = ptr;
-	for (i = 0; i < argp->argc; i++) {
-		p = parse_sub_data(p, &argp->argv[i]);
-		if (p == NULL) {
-			break;
-		}
-	}
-	return;
-}
-
-static void topic_publish(ros::Publisher &pub, int value)
+static void topic_publish(ros::Publisher &pub, unsigned int value)
 {
 	std_msgs::String str;
 	PubDataArgType arg;
 
 	arg.argc = 1;
-	arg.fmt[0] = (char*)"value";
 	arg.argv[0] = value;
 	create_pub_data(str_buf, &arg);
 	str.data = string(str_buf);
@@ -176,50 +121,30 @@ void usr_task1(void)
 /*****mROS user task code*******/
 void pose_callback(std_msgs::String *msg)
 {
-	PubDataArgType arg;
-	arg.argc = 2;
-	read_sub_data((char*)msg->data.c_str(), &arg);
-	car_sensor.pos.x = arg.argv[0];
-	car_sensor.pos.z = arg.argv[1];
-
-	//syslog(LOG_NOTICE, "/pose x=%d y=%d", arg.argv[0], arg.argv[1]);
+	sscanf(msg->data.c_str(), "%u:%u", &car_sensor.pos.x, &car_sensor.pos.y);
 }
 void stearing_callback(std_msgs::String *msg)
 {
-	PubDataArgType arg;
-	arg.argc = 2;
-	read_sub_data((char*)msg->data.c_str(), &arg);
-	car_sensor.stear.left = arg.argv[0];
-	car_sensor.stear.right = arg.argv[1];
-	//syslog(LOG_NOTICE, "/stearing left_stear=%d right_stear=%d", arg.argv[0], arg.argv[1]);
+	sscanf(msg->data.c_str(), "%u", &car_sensor.stear.left);
 }
 void speed_callback(std_msgs::String *msg)
 {
-	PubDataArgType arg;
-	arg.argc = 2;
-	read_sub_data((char*)msg->data.c_str(), &arg);
-	car_sensor.rpm.left = arg.argv[0];
-	car_sensor.rpm.right = arg.argv[1];
-	//syslog(LOG_NOTICE, "/speed left_rpm=%d right_rpm=%d", arg.argv[0], arg.argv[1]);
+	sscanf(msg->data.c_str(), "%u", &car_sensor.rpm.left);
 }
 void obstacle_callback(std_msgs::String *msg)
 {
-	PubDataArgType arg;
-	arg.argc = 3;
-	read_sub_data((char*)msg->data.c_str(), &arg);
-	car_sensor.obstacle.found = arg.argv[0];
-	car_sensor.obstacle.distance = arg.argv[1];
-	car_sensor.obstacle.angle = arg.argv[2];
-	syslog(LOG_NOTICE, "/obstacle found=%d distance=%d angle=%d car_mode=%d", arg.argv[0], arg.argv[1], arg.argv[2], car_mode);
-	wup_tsk(USR_TASK1);
+	sscanf(msg->data.c_str(), "%u:%u", &car_sensor.obstacle.distance, &car_sensor.obstacle.angle);
+	if (car_sensor.obstacle.distance <= 5U) {
+		car_sensor.obstacle.found = 1U;
+		wup_tsk(USR_TASK1);
+	}
+	else {
+		car_sensor.obstacle.found = 0U;
+	}
 }
 void line_sensor_callback(std_msgs::String *msg)
 {
-	PubDataArgType arg;
-	arg.argc = 1;
-	read_sub_data((char*)msg->data.c_str(), &arg);
-	car_sensor.line_sensor.light = arg.argv[0];
-	//syslog(LOG_NOTICE, "/speed line_sensor=%d ", arg.argv[0]);
+	sscanf(msg->data.c_str(), "%u", &car_sensor.line_sensor.light);
 }
 
 void usr_task2(void)
