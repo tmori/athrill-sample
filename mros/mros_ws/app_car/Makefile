@@ -63,9 +63,9 @@ endif
 #
 #  ソースファイルのディレクトリの定義
 #
-SRCDIR = ../../../../mros/asp-athrill-mbed/asp-athrill
-MROS_LIB_DIR=../../../../fork/mROS/mros-lib
-MROS_SRC_DIR=$(MROS_LIB_DIR)/mros-src
+include Makefile.env
+SRCDIR = $(PRJROOT_ASP)
+#MROS_LIB_DIR=$(PRJROOT_MROS)
 ROS_VERSION	:= kinetic
 
 #
@@ -159,11 +159,11 @@ IFLAGS	+= -I$(MROS_SRC_DIR)/packet/template/version/$(ROS_VERSION)
 IFLAGS	+= -I$(MROS_SRC_DIR)/packet/cimpl/version/$(ROS_VERSION)
 IFLAGS	+= -I$(MROS_SRC_DIR)/protocol/cimpl
 IFLAGS	+= -I$(MROS_SRC_DIR)/transfer/cimpl
-IFLAGS += -I$(MROS_LIB_DIR)/mros-msgs
+IFLAGS += -I$(MROS_MSG_DIR)
 
 
 INCLUDES := -I. -I./include -I$(SRCDIR)/include 
-INCLUDES += -I$(SRCDIR)/arch -I$(SRCDIR) -I$(MROS_LIB_DIR)/mros-src/inc 
+INCLUDES += -I$(SRCDIR)/arch -I$(SRCDIR) -I$(MROS_SRC_DIR)/inc 
 INCLUDES	+= -I$(SRCDIR)
 INCLUDES	+= -I$(SRCDIR)/include
 INCLUDES	+= -I$(SRCDIR)/kernel

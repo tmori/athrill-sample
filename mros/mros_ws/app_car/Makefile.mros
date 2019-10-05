@@ -1,12 +1,5 @@
-ATHRILL_ROOT=../../../../athrill
-MROS_LIB_DIR=../../../../fork/mROS
-MBED_LIB_DIR=../../../../mros/asp-athrill-mbed/mbed-lib
-PRJROOT_ETHERIF=$(MBED_LIB_DIR)/EthernetInterface
-PRJROOT_MROS=$(MROS_LIB_DIR)/mros-lib
-PRJROOT_ASP=../../../../mros/asp-athrill-mbed/asp-athrill
-SRC_ROOT=$(MROS_LIB_DIR)/mros-lib/mros-src
-MROS_MSG_DIR=$(MROS_LIB_DIR)/mros-lib/mros-msgs
-APL_DIR=.
+include Makefile.env
+
 
 ROS_VERSION	:= kinetic
 
@@ -42,19 +35,19 @@ IFLAGS	+= -I$(PRJROOT_ASP)/arch
 IFLAGS	+= -I$(PRJROOT_ASP)/arch/v850_gcc
 IFLAGS	+= -I$(ATHRILL_ROOT)/trunk/apl/include
 
-IFLAGS	+= -I$(SRC_ROOT)/inc
-IFLAGS	+= -I$(SRC_ROOT)/api
-IFLAGS	+= -I$(SRC_ROOT)/protocol/cimpl
-IFLAGS	+= -I$(SRC_ROOT)/node/cimpl
-IFLAGS	+= -I$(SRC_ROOT)/topic/cimpl
-IFLAGS	+= -I$(SRC_ROOT)/os/target/os_asp
-IFLAGS	+= -I$(SRC_ROOT)/comm/cimpl/target/lwip
-IFLAGS	+= -I$(SRC_ROOT)/comm/cimpl
-IFLAGS	+= -I$(SRC_ROOT)/packet/cimpl
-IFLAGS	+= -I$(SRC_ROOT)/packet/template/version/$(ROS_VERSION)
-IFLAGS	+= -I$(SRC_ROOT)/packet/cimpl/version/$(ROS_VERSION)
-IFLAGS	+= -I$(SRC_ROOT)/protocol/cimpl
-IFLAGS	+= -I$(SRC_ROOT)/transfer/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/inc
+IFLAGS	+= -I$(MROS_SRC_DIR)/api
+IFLAGS	+= -I$(MROS_SRC_DIR)/protocol/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/node/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/topic/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/os/target/os_asp
+IFLAGS	+= -I$(MROS_SRC_DIR)/comm/cimpl/target/lwip
+IFLAGS	+= -I$(MROS_SRC_DIR)/comm/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/packet/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/packet/template/version/$(ROS_VERSION)
+IFLAGS	+= -I$(MROS_SRC_DIR)/packet/cimpl/version/$(ROS_VERSION)
+IFLAGS	+= -I$(SRC_RMROS_SRC_DIROOT)/protocol/cimpl
+IFLAGS	+= -I$(MROS_SRC_DIR)/transfer/cimpl
 IFLAGS	+= -I$(MROS_MSG_DIR)
 IFLAGS	+= -I$(APL_DIR)/include
 IFLAGS	+= -I$(APL_DIR)/mros_config
@@ -90,20 +83,20 @@ CXX_OBJ += mros_name.o
 
 OBJS	:= $(C_OBJ) $(CXX_OBJ)
 
-VPATH	:= $(SRC_ROOT)/api
-VPATH	+= $(SRC_ROOT)/comm/cimpl/target/lwip
-VPATH	+= $(SRC_ROOT)/comm/cimpl/target/lwip
-VPATH	+= $(SRC_ROOT)/comm/cimpl
-VPATH	+= $(SRC_ROOT)/node/cimpl
-VPATH	+= $(SRC_ROOT)/lib
-VPATH	+= $(SRC_ROOT)/os
-VPATH	+= $(SRC_ROOT)/os/target/os_asp
-VPATH	+= $(SRC_ROOT)/packet/cimpl/version/$(ROS_VERSION)
-VPATH	+= $(SRC_ROOT)/protocol/cimpl
-VPATH	+= $(SRC_ROOT)/topic/cimpl
-VPATH	+= $(SRC_ROOT)/transfer/cimpl
-VPATH	+= $(SRC_ROOT)/config
-VPATH	+= $(SRC_ROOT)/config/os/target/os_asp
+VPATH	:= $(MROS_SRC_DIR)/api
+VPATH	+= $(MROS_SRC_DIR)/comm/cimpl/target/lwip
+VPATH	+= $(MROS_SRC_DIR)/comm/cimpl/target/lwip
+VPATH	+= $(MROS_SRC_DIR)/comm/cimpl
+VPATH	+= $(MROS_SRC_DIR)/node/cimpl
+VPATH	+= $(MROS_SRC_DIR)/lib
+VPATH	+= $(MROS_SRC_DIR)/os
+VPATH	+= $(MROS_SRC_DIR)/os/target/os_asp
+VPATH	+= $(MROS_SRC_DIR)/packet/cimpl/version/$(ROS_VERSION)
+VPATH	+= $(MROS_SRC_DIR)/protocol/cimpl
+VPATH	+= $(MROS_SRC_DIR)/topic/cimpl
+VPATH	+= $(MROS_SRC_DIR)/transfer/cimpl
+VPATH	+= $(MROS_SRC_DIR)/config
+VPATH	+= $(MROS_SRC_DIR)/config/os/target/os_asp
 VPATH	+= $(PRJROOT_MROS)
 
 %.o: %.S
