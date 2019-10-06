@@ -16,9 +16,9 @@ static inline void actuator_device_write(uint32 addr, uint32 data)
     return;
 }
 
-static inline void actuator_device_sync(uint32 addr)
+static inline void actuator_device_sync(void)
 {
-    sil_wrw_mem((void*)DEVICE_ACTUATOR_ADDR_SYNC, 1U);
+    sil_wrb_mem((void*)DEVICE_ACTUATOR_ADDR_SYNC, 1U);
     return;
 }
 

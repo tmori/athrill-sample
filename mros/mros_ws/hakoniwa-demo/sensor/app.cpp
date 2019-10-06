@@ -23,7 +23,7 @@ static char str_buf[1024];
 static void topic_publish(ros::Publisher &pub, int32 value)
 {
 	std_msgs::String str;
-	sprintf(str_buf, "%d", value);
+	sprintf(str_buf, "v:%d", value);
 	str.data = string(str_buf);
 	pub.publish(str);
 	return;
@@ -31,7 +31,7 @@ static void topic_publish(ros::Publisher &pub, int32 value)
 static void topic_publish2(ros::Publisher &pub, uint32 value1, int32 value2)
 {
 	std_msgs::String str;
-	sprintf(str_buf, "%d:%d", value1, value2);
+	sprintf(str_buf, "v:%d:%d", value1, value2);
 	str.data = string(str_buf);
 	pub.publish(str);
 	return;
