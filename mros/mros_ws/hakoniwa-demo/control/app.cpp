@@ -17,22 +17,22 @@ unsigned int athrill_device_func_call __attribute__ ((section(".athrill_device_s
 
 typedef struct {
 	struct {
-		unsigned int x;
-		unsigned int y;
+		int x;
+		int y;
 	} pos;
 	struct {
-		unsigned int left;
+		int left;
 	} stear;
 	struct {
-		unsigned int left;
+		int left;
 	} rpm;
 	struct {
-		unsigned int found;
-		unsigned int distance;
-		unsigned int angle;
+		int found;
+		int distance;
+		int angle;
 	} obstacle;
 	struct {
-		unsigned int light;
+		int light;
 	} line_sensor;
 } SensorInfoType;
 static SensorInfoType car_sensor;
@@ -43,15 +43,15 @@ static char str_buf[1024];
 #define ARG_NUM	3
 typedef struct {
 	int argc;
-	unsigned int argv[ARG_NUM];
+	int argv[ARG_NUM];
 } PubDataArgType;
 static void create_pub_data(char *ptr, PubDataArgType *argp)
 {
 	if (argp->argc == 1) {
-		sprintf(ptr, "%u", argp->argv[0]);
+		sprintf(ptr, "v:%d", argp->argv[0]);
 	}
 	else {
-		sprintf(ptr, "%u:%u",  argp->argv[0], argp->argv[1]);
+		sprintf(ptr, "v:%d:%d",  argp->argv[0], argp->argv[1]);
 	}
 	return;
 }
@@ -121,21 +121,21 @@ void usr_task1(void)
 /*****mROS user task code*******/
 void pose_callback(std_msgs::String *msg)
 {
-	sscanf(msg->data.c_str(), "%u:%u", &car_sensor.pos.x, &car_sensor.pos.y);
+	sscanf(msg->data.c_str(), "v:%d:%d", &car_sensor.pos.x, &car_sensor.pos.y);
 }
 void stearing_callback(std_msgs::String *msg)
 {
-	sscanf(msg->data.c_str(), "%u", &car_sensor.stear.left);
+	sscanf(msg->data.c_str(), "v:%d", &car_sensor.stear.left);
 }
 void speed_callback(std_msgs::String *msg)
 {
-	sscanf(msg->data.c_str(), "%u", &car_sensor.rpm.left);
+	sscanf(msg->data.c_str(), "v:%d", &car_sensor.rpm.left);
 }
 void obstacle_callback(std_msgs::String *msg)
 {
-	sscanf(msg->data.c_str(), "%u:%u", &car_sensor.obstacle.distance, &car_sensor.obstacle.angle);
-	if (car_sensor.obstacle.distance > 0U) {
-		car_sensor.obstacle.found = 1U;
+	sscanf(msg->data.c_str(), "v:%d:%d", &car_sensor.obstacle.distance, &car_sensor.obstacle.angle);
+	if (car_sensor.obstacle.distance > 0) {
+		car_sensor.obstacle.found = 1;
 		wup_tsk(USR_TASK1);
 	}
 	else {
@@ -144,7 +144,7 @@ void obstacle_callback(std_msgs::String *msg)
 }
 void line_sensor_callback(std_msgs::String *msg)
 {
-	sscanf(msg->data.c_str(), "%u", &car_sensor.line_sensor.light);
+	sscanf(msg->data.c_str(), "v:%d", &car_sensor.line_sensor.light);
 }
 
 void usr_task2(void)
