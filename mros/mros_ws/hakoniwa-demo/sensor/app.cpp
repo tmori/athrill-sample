@@ -20,18 +20,18 @@ unsigned int athrill_device_func_call __attribute__ ((section(".athrill_device_s
 
 static char str_buf[1024];
 
-static void topic_publish(ros::Publisher &pub, uint32 value)
+static void topic_publish(ros::Publisher &pub, int32 value)
 {
 	std_msgs::String str;
-	sprintf(str_buf, "%u", value);
+	sprintf(str_buf, "%d", value);
 	str.data = string(str_buf);
 	pub.publish(str);
 	return;
 }
-static void topic_publish2(ros::Publisher &pub, uint32 value1, uint32 value2)
+static void topic_publish2(ros::Publisher &pub, uint32 value1, int32 value2)
 {
 	std_msgs::String str;
-	sprintf(str_buf, "%u:%u", value1, value2);
+	sprintf(str_buf, "%d:%d", value1, value2);
 	str.data = string(str_buf);
 	pub.publish(str);
 	return;
@@ -52,11 +52,11 @@ void usr_task1(void)
 	syslog(LOG_NOTICE,"========Activate user task1========");
 	int argc = 0;
 	char *argv = NULL;
-	uint32 data1;
-	uint32 data2;
+	int32 data1;
+	int32 data2;
 	ros::init(argc,argv,"vehicle_sensor");
 	ros::NodeHandle n;
-	ros::Rate loop_rate(1000);
+	ros::Rate loop_rate(1);
 
 	car_sensor.pose = n.advertise<std_msgs::String>("pose", 1);
 	car_sensor.stearing = n.advertise<std_msgs::String>("stearing", 1);
@@ -66,25 +66,25 @@ void usr_task1(void)
 
 	while (1) {
 		//pose
-		sensor_device_read(DEVICE_SENSOR_ADDR_POSE_X, &data1);
-		sensor_device_read(DEVICE_SENSOR_ADDR_POSE_Y, &data2);
+		sensor_device_read(DEVICE_SENSOR_ADDR_POSE_X, (uint32*)&data1);
+		sensor_device_read(DEVICE_SENSOR_ADDR_POSE_Y, (uint32*)&data2);
 		topic_publish2(car_sensor.pose, data1, data2);
 
 		//stearing
-		sensor_device_read(DEVICE_SENSOR_ADDR_STEARING, &data1);
+		sensor_device_read(DEVICE_SENSOR_ADDR_STEARING, (uint32*)&data1);
 		topic_publish(car_sensor.stearing, data1);
 
 		//speed
-		sensor_device_read(DEVICE_SENSOR_ADDR_SPEED, &data1);
+		sensor_device_read(DEVICE_SENSOR_ADDR_SPEED, (uint32*)&data1);
 		topic_publish(car_sensor.speed, data1);
 
 		//obstacle
-		sensor_device_read(DEVICE_SENSOR_ADDR_OBSTACLE_DISTANCE, &data1);
-		sensor_device_read(DEVICE_SENSOR_ADDR_OBSTACLE_ANGLE, &data2);
+		sensor_device_read(DEVICE_SENSOR_ADDR_OBSTACLE_DISTANCE, (uint32*)&data1);
+		sensor_device_read(DEVICE_SENSOR_ADDR_OBSTACLE_ANGLE, (uint32*)&data2);
 		topic_publish2(car_sensor.obstacle, data1, data2);
 
 		//line_sensor
-		sensor_device_read(DEVICE_SENSOR_ADDR_LINE_SENSOR, &data1);
+		sensor_device_read(DEVICE_SENSOR_ADDR_LINE_SENSOR, (uint32*)&data1);
 		topic_publish(car_sensor.line_sensor, data1);
 
 		loop_rate.sleep();

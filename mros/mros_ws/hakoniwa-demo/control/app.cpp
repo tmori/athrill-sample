@@ -134,7 +134,7 @@ void speed_callback(std_msgs::String *msg)
 void obstacle_callback(std_msgs::String *msg)
 {
 	sscanf(msg->data.c_str(), "%u:%u", &car_sensor.obstacle.distance, &car_sensor.obstacle.angle);
-	if (car_sensor.obstacle.distance <= 5U) {
+	if (car_sensor.obstacle.distance > 0U) {
 		car_sensor.obstacle.found = 1U;
 		wup_tsk(USR_TASK1);
 	}
