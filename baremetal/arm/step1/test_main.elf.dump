@@ -1,0 +1,13 @@
+
+test_main.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <__text>:
+   0:	ebffffff 	bl	4 <main>
+
+00000004 <main>:
+   4:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+   8:	e28db000 	add	fp, sp, #0
+   c:	eafffffe 	b	c <main+0x8>
