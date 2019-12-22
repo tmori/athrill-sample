@@ -8,5 +8,7 @@
 	AALIGN(2)
 	AGLOBAL(_start)
 ALABEL(_start)
+    mov r2, #9
+    add r1, r2, #11
 	bl    main
 
