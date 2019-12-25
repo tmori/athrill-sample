@@ -5,11 +5,18 @@ test_main.elf:     file format elf32-littlearm
 Disassembly of section .text:
 
 00000000 <__text>:
-   0:	e3a02009 	mov	r2, #9, 0
-   4:	e282100b 	add	r1, r2, #11, 0
-   8:	ebffffff 	bl	c <main>
+   0:	e3a02202 	mov	r2, #536870912	; 0x20000000
+   4:	e3a0100a 	mov	r1, #10
+   8:	e2811005 	add	r1, r1, #5
+   c:	e5821004 	str	r1, [r2, #4]
+  10:	e5925004 	ldr	r5, [r2, #4]
+  14:	ebffffff 	bl	18 <main>
 
-0000000c <main>:
-   c:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
-  10:	e28db000 	add	fp, sp, #0, 0
-  14:	eafffffe 	b	14 <main+0x8>
+00000018 <main>:
+  18:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+  1c:	e28db000 	add	fp, sp, #0
+  20:	e59f3008 	ldr	r3, [pc, #8]	; 30 <main+0x18>
+  24:	e3a02001 	mov	r2, #1
+  28:	e5c32000 	strb	r2, [r3]
+  2c:	eafffffe 	b	2c <main+0x14>
+  30:	20000000 	.word	0x20000000
