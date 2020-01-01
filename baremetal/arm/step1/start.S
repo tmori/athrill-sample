@@ -8,10 +8,11 @@
 	AALIGN(2)
 	AGLOBAL(_start)
 ALABEL(_start)
-    mov r2, #0x20000000
-    mov r1, #10
-    add r1, r1, #5
-    str r1, [r2, #+4]
-    ldr r5, [r2, #+4]
-	bl    main
+	ldr  r0, =_stack_data
+	add  r0, #128
+	mov  sp, r0
+	bl _bss_clear
+	bl _data_init
+
+	b    _main
 

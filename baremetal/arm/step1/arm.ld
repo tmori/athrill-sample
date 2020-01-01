@@ -36,12 +36,14 @@ SECTIONS
 	.ARM.exidx   : { *(.ARM.exidx* .gnu.linkonce.armexidx.*) }
 	__exidx_end = .;
 
+	__idata_start = .;
 	.data :
 	{
 		__data_start = .;
 		*(.data)
 		*(.data.*)
-	} > TCMU
+	} > TCMU AT > TCML
+	__idata_end = .;
 	_edata = .;
 	PROVIDE(edata = .);
 

@@ -14,7 +14,7 @@ OBJS	+= main.o
 
 CFLAGS	:= -O0 
 CFLAGS	+= -gdwarf-2 
-CFLAGS  += -Wall -Wno-unused-label -Wpointer-arith  
+CFLAGS  += -Wall -Wno-unused-label -Wpointer-arith    -fleading-underscore
 
 
 LDSCRIPT = $(BUILD_PATH)/arm.ld
@@ -22,7 +22,7 @@ LDFLAGS	:=  -mcpu=cortex-a9 -mthumb
 LDFLAGS	+= -mthumb-interwork 
 LDFLAGS	+= -marm -march=armv7-a 
 LDFLAGS	+= -mfpu=vfpv3 -mfloat-abi=hard 
-LDFLAGS	+= -mno-unaligned-access  
+LDFLAGS	+= -mno-unaligned-access   -fleading-underscore
 LDFLAGS	+= -Wl,--gc-sections 
 LDFLAGS	+= -nostartfiles 
 #LDFLAGS	+= --specs=nano.specs 
