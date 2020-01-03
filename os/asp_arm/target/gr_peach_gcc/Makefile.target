@@ -23,7 +23,8 @@ endif
 #  コンパイルオプション
 #
 INCLUDES := $(INCLUDES) -I$(TARGETDIR)
-COPTS := $(COPTS) -mlittle-endian
+COPTS := $(COPTS) -mlittle-endian 
+#LDFLAGS := $(LDFLAGS) -mlittle-endian -nostartfiles --specs=nano.specs -e start
 LDFLAGS := $(LDFLAGS) -mlittle-endian -nostartfiles --specs=nano.specs -e start
 CDEFS := $(CDEFS) -DTOPPERS_RZA1H
 CFG1_OUT_LDFLAGS := -nostdlib $(CFG1_OUT_LDFLAGS)

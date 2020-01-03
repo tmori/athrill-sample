@@ -6,107 +6,103 @@ Disassembly of section .text:
 
 00000000 <__text>:
    0:	e59f0010 	ldr	r0, [pc, #16]	; 18 <__text+0x18>
-   4:	e2800080 	add	r0, r0, #128, 0	; 0x80
+   4:	e2800080 	add	r0, r0, #128	; 0x80
    8:	e1a0d000 	mov	sp, r0
-   c:	eb000024 	bl	a4 <_bss_clear>
-  10:	eb00003b 	bl	104 <_data_init>
-  14:	ea00001c 	b	8c <_main>
+   c:	eb000022 	bl	9c <bss_clear>
+  10:	eb000039 	bl	fc <data_init>
+  14:	ea00001a 	b	84 <main>
   18:	20000000 	.word	0x20000000
 
-0000001c <_test_print>:
+0000001c <test_print>:
   1c:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
-  20:	e28db000 	add	fp, sp, #0, 0
-  24:	e24dd014 	sub	sp, sp, #20, 0
+  20:	e28db000 	add	fp, sp, #0
+  24:	e24dd014 	sub	sp, sp, #20
   28:	e50b0010 	str	r0, [fp, #-16]
-  2c:	e3a03000 	mov	r3, #0, 0
+  2c:	e3a03000 	mov	r3, #0
   30:	e50b3008 	str	r3, [fp, #-8]
-  34:	ea000008 	b	5c <_test_print+0x40>
-  38:	e51b3008 	ldr	r3, [fp, #-8]
-  3c:	e51b2010 	ldr	r2, [fp, #-16]
-  40:	e0823003 	add	r3, r2, r3
-  44:	e59f203c 	ldr	r2, [pc, #60]	; 88 <_test_print+0x6c>
+  34:	ea000008 	b	5c <test_print+0x40>
+  38:	e59f1040 	ldr	r1, [pc, #64]	; 80 <test_print+0x64>
+  3c:	e51b3008 	ldr	r3, [fp, #-8]
+  40:	e51b2010 	ldr	r2, [fp, #-16]
+  44:	e0823003 	add	r3, r2, r3
   48:	e5d33000 	ldrb	r3, [r3]
-  4c:	e5c23000 	strb	r3, [r2]
+  4c:	e5c13000 	strb	r3, [r1]
   50:	e51b3008 	ldr	r3, [fp, #-8]
-  54:	e2833001 	add	r3, r3, #1, 0
+  54:	e2833001 	add	r3, r3, #1
   58:	e50b3008 	str	r3, [fp, #-8]
   5c:	e51b3008 	ldr	r3, [fp, #-8]
   60:	e51b2010 	ldr	r2, [fp, #-16]
   64:	e0823003 	add	r3, r2, r3
   68:	e5d33000 	ldrb	r3, [r3]
-  6c:	e3530000 	cmp	r3, #0, 0
-  70:	1afffff0 	bne	38 <_test_print+0x1c>
-  74:	e1a00000 	nop			; (mov r0, r0)
-  78:	e1a00000 	nop			; (mov r0, r0)
-  7c:	e28bd000 	add	sp, fp, #0, 0
-  80:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
-  84:	e12fff1e 	bx	lr
-  88:	fffffa07 	.word	0xfffffa07
+  6c:	e3530000 	cmp	r3, #0
+  70:	1afffff0 	bne	38 <test_print+0x1c>
+  74:	e24bd000 	sub	sp, fp, #0
+  78:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+  7c:	e12fff1e 	bx	lr
+  80:	fffffa07 	.word	0xfffffa07
 
-0000008c <_main>:
-  8c:	e92d4800 	push	{fp, lr}
-  90:	e28db004 	add	fp, sp, #4, 0
-  94:	e59f0004 	ldr	r0, [pc, #4]	; a0 <_main+0x14>
-  98:	ebffffdf 	bl	1c <_test_print>
-  9c:	eafffffe 	b	9c <_main+0x10>
-  a0:	00000198 	.word	0x00000198
+00000084 <main>:
+  84:	e92d4800 	push	{fp, lr}
+  88:	e28db004 	add	fp, sp, #4
+  8c:	e59f0004 	ldr	r0, [pc, #4]	; 98 <main+0x14>
+  90:	ebffffe1 	bl	1c <test_print>
+  94:	eafffffe 	b	94 <main+0x10>
+  98:	00000188 	.word	0x00000188
 
-000000a4 <_bss_clear>:
-  a4:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
-  a8:	e28db000 	add	fp, sp, #0, 0
-  ac:	e24dd00c 	sub	sp, sp, #12, 0
-  b0:	e59f3044 	ldr	r3, [pc, #68]	; fc <_bss_clear+0x58>
-  b4:	e50b3008 	str	r3, [fp, #-8]
-  b8:	e59f3040 	ldr	r3, [pc, #64]	; 100 <_bss_clear+0x5c>
-  bc:	e50b300c 	str	r3, [fp, #-12]
-  c0:	ea000005 	b	dc <_bss_clear+0x38>
-  c4:	e51b3008 	ldr	r3, [fp, #-8]
-  c8:	e3a02000 	mov	r2, #0, 0
-  cc:	e5c32000 	strb	r2, [r3]
-  d0:	e51b3008 	ldr	r3, [fp, #-8]
-  d4:	e2833001 	add	r3, r3, #1, 0
-  d8:	e50b3008 	str	r3, [fp, #-8]
-  dc:	e51b2008 	ldr	r2, [fp, #-8]
-  e0:	e51b300c 	ldr	r3, [fp, #-12]
-  e4:	e1520003 	cmp	r2, r3
-  e8:	3afffff5 	bcc	c4 <_bss_clear+0x20>
-  ec:	e1a00000 	nop			; (mov r0, r0)
-  f0:	e28bd000 	add	sp, fp, #0, 0
-  f4:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
-  f8:	e12fff1e 	bx	lr
-  fc:	20000000 	.word	0x20000000
- 100:	20000080 	.word	0x20000080
+0000009c <bss_clear>:
+  9c:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+  a0:	e28db000 	add	fp, sp, #0
+  a4:	e24dd00c 	sub	sp, sp, #12
+  a8:	e59f3044 	ldr	r3, [pc, #68]	; f4 <bss_clear+0x58>
+  ac:	e50b3008 	str	r3, [fp, #-8]
+  b0:	e59f3040 	ldr	r3, [pc, #64]	; f8 <bss_clear+0x5c>
+  b4:	e50b300c 	str	r3, [fp, #-12]
+  b8:	ea000005 	b	d4 <bss_clear+0x38>
+  bc:	e51b3008 	ldr	r3, [fp, #-8]
+  c0:	e3a02000 	mov	r2, #0
+  c4:	e5c32000 	strb	r2, [r3]
+  c8:	e51b3008 	ldr	r3, [fp, #-8]
+  cc:	e2833001 	add	r3, r3, #1
+  d0:	e50b3008 	str	r3, [fp, #-8]
+  d4:	e51b2008 	ldr	r2, [fp, #-8]
+  d8:	e51b300c 	ldr	r3, [fp, #-12]
+  dc:	e1520003 	cmp	r2, r3
+  e0:	3afffff5 	bcc	bc <bss_clear+0x20>
+  e4:	e1a00000 	nop			; (mov r0, r0)
+  e8:	e24bd000 	sub	sp, fp, #0
+  ec:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+  f0:	e12fff1e 	bx	lr
+  f4:	20000000 	.word	0x20000000
+  f8:	20000080 	.word	0x20000080
 
-00000104 <_data_init>:
- 104:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
- 108:	e28db000 	add	fp, sp, #0, 0
- 10c:	e24dd014 	sub	sp, sp, #20, 0
- 110:	e59f3060 	ldr	r3, [pc, #96]	; 178 <_data_init+0x74>
- 114:	e50b3008 	str	r3, [fp, #-8]
- 118:	e59f305c 	ldr	r3, [pc, #92]	; 17c <_data_init+0x78>
- 11c:	e50b3010 	str	r3, [fp, #-16]
- 120:	e59f3058 	ldr	r3, [pc, #88]	; 180 <_data_init+0x7c>
- 124:	e50b300c 	str	r3, [fp, #-12]
- 128:	ea000009 	b	154 <_data_init+0x50>
- 12c:	e51b3008 	ldr	r3, [fp, #-8]
- 130:	e5d32000 	ldrb	r2, [r3]
+000000fc <data_init>:
+  fc:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+ 100:	e28db000 	add	fp, sp, #0
+ 104:	e24dd014 	sub	sp, sp, #20
+ 108:	e59f3058 	ldr	r3, [pc, #88]	; 168 <data_init+0x6c>
+ 10c:	e50b3008 	str	r3, [fp, #-8]
+ 110:	e59f3054 	ldr	r3, [pc, #84]	; 16c <data_init+0x70>
+ 114:	e50b3010 	str	r3, [fp, #-16]
+ 118:	e59f3050 	ldr	r3, [pc, #80]	; 170 <data_init+0x74>
+ 11c:	e50b300c 	str	r3, [fp, #-12]
+ 120:	ea000009 	b	14c <data_init+0x50>
+ 124:	e51b3008 	ldr	r3, [fp, #-8]
+ 128:	e5d32000 	ldrb	r2, [r3]
+ 12c:	e51b300c 	ldr	r3, [fp, #-12]
+ 130:	e5c32000 	strb	r2, [r3]
  134:	e51b300c 	ldr	r3, [fp, #-12]
- 138:	e5c32000 	strb	r2, [r3]
- 13c:	e51b300c 	ldr	r3, [fp, #-12]
- 140:	e2833001 	add	r3, r3, #1, 0
- 144:	e50b300c 	str	r3, [fp, #-12]
- 148:	e51b3008 	ldr	r3, [fp, #-8]
- 14c:	e2833001 	add	r3, r3, #1, 0
- 150:	e50b3008 	str	r3, [fp, #-8]
- 154:	e51b2008 	ldr	r2, [fp, #-8]
- 158:	e51b3010 	ldr	r3, [fp, #-16]
- 15c:	e1520003 	cmp	r2, r3
- 160:	3afffff1 	bcc	12c <_data_init+0x28>
- 164:	e1a00000 	nop			; (mov r0, r0)
- 168:	e1a00000 	nop			; (mov r0, r0)
- 16c:	e28bd000 	add	sp, fp, #0, 0
- 170:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
- 174:	e12fff1e 	bx	lr
- 178:	000001aa 	.word	0x000001aa
- 17c:	20000000 	.word	0x20000000
- 180:	20000000 	.word	0x20000000
+ 138:	e2833001 	add	r3, r3, #1
+ 13c:	e50b300c 	str	r3, [fp, #-12]
+ 140:	e51b3008 	ldr	r3, [fp, #-8]
+ 144:	e2833001 	add	r3, r3, #1
+ 148:	e50b3008 	str	r3, [fp, #-8]
+ 14c:	e51b2008 	ldr	r2, [fp, #-8]
+ 150:	e51b3010 	ldr	r3, [fp, #-16]
+ 154:	e1520003 	cmp	r2, r3
+ 158:	3afffff1 	bcc	124 <data_init+0x28>
+ 15c:	e24bd000 	sub	sp, fp, #0
+ 160:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+ 164:	e12fff1e 	bx	lr
+ 168:	0000019a 	.word	0x0000019a
+ 16c:	20000000 	.word	0x20000000
+ 170:	20000000 	.word	0x20000000

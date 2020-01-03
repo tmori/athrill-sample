@@ -14,7 +14,8 @@ OBJS	+= main.o
 
 CFLAGS	:= -O0 
 CFLAGS	+= -gdwarf-2 
-CFLAGS  += -Wall -Wno-unused-label -Wpointer-arith    -fleading-underscore
+#CFLAGS  += -Wall -Wno-unused-label -Wpointer-arith    -fleading-underscore
+CFLAGS  += -Wall -Wno-unused-label -Wpointer-arith   
 
 
 LDSCRIPT = $(BUILD_PATH)/arm.ld

@@ -36,14 +36,14 @@ SECTIONS
 	.ARM.exidx   : { *(.ARM.exidx* .gnu.linkonce.armexidx.*) }
 	__exidx_end = .;
 
-	__idata_start = .;
+	idata_start = .;
 	.data :
 	{
-		__data_start = .;
+		data_start = .;
 		*(.data)
 		*(.data.*)
 	} > TCMU AT > TCML
-	__idata_end = .;
+	idata_end = .;
 	_edata = .;
 	PROVIDE(edata = .);
 
@@ -51,13 +51,13 @@ SECTIONS
 
 	.bss :
 	{
-		__bss_start  = .;
+		bss_start  = .;
 		*(.bss)
 		*(COMMON)
 		. = ALIGN(4);
 	} > TCMU
 	. = ALIGN(4);
 	_end = .;
-	__bss_end = .;
+	bss_end = .;
 	PROVIDE(end = .);
 }
