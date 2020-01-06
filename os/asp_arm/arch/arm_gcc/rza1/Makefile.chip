@@ -19,7 +19,7 @@ CHIPDIR = $(SRCDIR)/arch/$(PRC)_$(TOOL)/$(CHIP)
 #  コンパイルオプション
 #
 INCLUDES := $(INCLUDES) -I$(CHIPDIR)
-COPTS := $(COPTS) -mcpu=cortex-a9
+COPTS := $(COPTS) -mcpu=cortex-a9 -marm -mno-thumb-interwork
 LDFLAGS := $(LDFLAGS) -N -mcpu=cortex-a9
 CDEFS := $(CDEFS) -D__TARGET_ARCH_ARM=7
 

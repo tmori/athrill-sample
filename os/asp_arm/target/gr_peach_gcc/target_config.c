@@ -282,18 +282,18 @@ target_initialize(void)
 	/*
 	 * チップ依存の初期化
 	 */
-	chip_initialize();
+	//chip_initialize();
 
 	/* 低消費電力モードの初期化 */
-	lowpower_initialize();
+	//lowpower_initialize();
 
 	/* 汎用入出力ポートの初期化（ポート／ペリフェラル兼用ピンのアサインの設定） */
-	port_initialize();
+	//port_initialize();
 
 	/*
 	 *  低レベル出力用にUARTを初期化
 	 */
-	scif_init(USE_SIO_PORTID);
+	//scif_init(USE_SIO_PORTID);
 
 	/*
 	 * 割込みベクタテーブルを VECTOR_TABLE_BASE レジスタに設定する
@@ -301,9 +301,9 @@ target_initialize(void)
 	extern void *vector_table;
 	CP15_SET_VBAR((uint32_t) &vector_table);
 
-	pl310_init(0, ~0x0U);
+	//pl310_init(0, ~0x0U);
 
-	set_led(BLUE_LED, 1);
+	//set_led(BLUE_LED, 1);
 }
 
 void

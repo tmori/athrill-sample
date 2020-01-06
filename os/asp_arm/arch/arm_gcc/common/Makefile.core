@@ -16,7 +16,7 @@ TOOLDIR = $(SRCDIR)/arch/$(TOOL)
 #  コンパイルオプション
 #
 INCLUDES := $(INCLUDES) -I$(COREDIR) -I$(TOOLDIR)
-LIBS := $(LIBS) -lgcc
+LIBS := $(LIBS) /usr/lib/gcc/arm-none-eabi/4.9.3/libgcc.a
 
 #
 #  カーネルに関する定義
