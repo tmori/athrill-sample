@@ -72,27 +72,27 @@ chip_initialize(void)
 	/*
 	 * キャッシュを無効に
 	 */
-	cache_disable();
+	//TODO cache_disable();
 
 	/*
 	 *  ブランチプリディクタを全無効化
 	 */
-	bpi_invalidate_all();
+	//TODO bpi_invalidate_all();
 
 	/*
 	 * MMUを有効に
 	 */
-	mmu_init();
+	//TODO mmu_init();
 
 	/*
 	 * キャッシュを有効に
 	 */
-	cache_enable();
+	//TODO cache_enable();
 
 	/*
 	 *  ブランチプリディクタを有効化
 	 */
-	btac_enable();
+	//TODO btac_enable();
 }
 
 /*

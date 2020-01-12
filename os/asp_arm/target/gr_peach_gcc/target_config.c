@@ -282,7 +282,7 @@ target_initialize(void)
 	/*
 	 * チップ依存の初期化
 	 */
-	//chip_initialize();
+	chip_initialize();
 
 	/* 低消費電力モードの初期化 */
 	//lowpower_initialize();
