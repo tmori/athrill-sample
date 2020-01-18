@@ -195,6 +195,7 @@ void task(intptr_t exinf)
 		default:
 			break;
 		}
+		dly_tsk(1);
 	}
 }
 
@@ -296,7 +297,7 @@ void main_task(intptr_t exinf)
 	SYSUTM	utime1, utime2;
 #endif /* TOPPERS_SUPPORT_GET_UTM */
 
-	SVC_PERROR(syslog_msk_log(LOG_UPTO(LOG_INFO), LOG_UPTO(LOG_EMERG)));
+	//SVC_PERROR(syslog_msk_log(LOG_UPTO(LOG_INFO), LOG_UPTO(LOG_EMERG)));
 	syslog(LOG_NOTICE, "Sample program starts (exinf = %d).", (int_t) exinf);
 
 	/*
@@ -360,7 +361,7 @@ void main_task(intptr_t exinf)
 	SVC_PERROR(get_tim(&stime1));
 	for (i = 0; i < task_loop; i++);
 	SVC_PERROR(get_tim(&stime2));
-	task_loop = LOOP_REF * 400UL / (stime2 - stime1);
+	//task_loop = LOOP_REF * 400UL / (stime2 - stime1);
 
 #endif /* TASK_LOOP */
 	tex_loop = task_loop / 4;
@@ -368,9 +369,9 @@ void main_task(intptr_t exinf)
 	/*
  	 *  タスクの起動
 	 */
-	SVC_PERROR(act_tsk(TASK1));
-	SVC_PERROR(act_tsk(TASK2));
-	SVC_PERROR(act_tsk(TASK3));
+	//SVC_PERROR(act_tsk(TASK1));
+	//SVC_PERROR(act_tsk(TASK2));
+	//SVC_PERROR(act_tsk(TASK3));
 
 	/*
  	 *  メインループ

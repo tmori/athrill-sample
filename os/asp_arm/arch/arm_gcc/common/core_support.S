@@ -128,6 +128,7 @@ ALABEL(dispatch_r)
 	tst   r0, r0
 	bne   call_texrtn          /* タスク例外ルーチンの呼び出し */
 ALABEL(dispatch_r_1)
+	msr   cpsr_cxsf, #(CPSR_SVC AOR CPSR_ALWAYS_SET) /* 割り込み許可(スーパーバイザーモード) */
 	bx    lr
 
 /*
@@ -234,7 +235,7 @@ ALABEL(dispatcher_2)
 	 *  なお，toppers_asm_custom_idle の記述にあたっては，次のレジスタは
 	 *  toppers_asm_custom_idleの前後で使用するため，
 	 *  toppers_asm_custom_idle 内で使用する場合は，前後で保存復帰すること．
-	 *  これらのレジスタは Calee saved レジスタであるため， 
+	 *  これらのレジスタは Calee saved レジスタであるため，
 	 *  toppers_asm_custom_idle として関数呼び出しをした場合は，呼び出した
 	 *  関数で自動的に保存復帰されるため，アセンブラレベルでの保存復帰は必
 	 *  要ない．
@@ -248,6 +249,9 @@ ALABEL(dispatcher_2)
 	 */
 	str   r5, [r7]      /* excpt_nest_count = 1 */
 
+#if 1
+	wfi
+#else
 #ifdef TOPPERS_CUSTOM_IDLE
 	toppers_asm_custom_idle
 #else /* !TOPPERS_CUSTOM_IDLE */
@@ -255,7 +259,7 @@ ALABEL(dispatcher_2)
 	nop
 	msr   cpsr_cxsf, #(CPSR_SVC AOR CPSR_CPULOCK AOR CPSR_ALWAYS_SET) /* CPUロック(スーパーバイザーモード) */
 #endif /* TOPPERS_CUSTOM_IDLE */
-
+#endif
 	ldr   r8, [r6]      /* reqflgがfalseならdispatcher_2へ */
 	cmp   r8, #0
 	beq   dispatcher_2

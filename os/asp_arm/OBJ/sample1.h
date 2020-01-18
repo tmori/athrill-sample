@@ -73,7 +73,7 @@
 #endif /* STACK_SIZE */
 
 #ifndef LOOP_REF
-#define LOOP_REF		ULONG_C(1000000)	/* 速度計測用のループ回数 */
+#define LOOP_REF		ULONG_C(10)	/* 速度計測用のループ回数 */
 #endif /* LOOP_REF */
 
 /*
