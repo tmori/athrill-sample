@@ -121,18 +121,23 @@ void usr_task1(void)
 /*****mROS user task code*******/
 void pose_callback(std_msgs::String *msg)
 {
+	syslog(LOG_NOTICE,"pose_callback():%s", msg->data.c_str());
+
 	sscanf(msg->data.c_str(), "v:%d:%d", &car_sensor.pos.x, &car_sensor.pos.y);
 }
 void stearing_callback(std_msgs::String *msg)
 {
+	syslog(LOG_NOTICE,"stearing_callback():%s", msg->data.c_str());
 	sscanf(msg->data.c_str(), "v:%d", &car_sensor.stear.left);
 }
 void speed_callback(std_msgs::String *msg)
 {
+	syslog(LOG_NOTICE,"speed_callback():%s", msg->data.c_str());
 	sscanf(msg->data.c_str(), "v:%d", &car_sensor.rpm.left);
 }
 void obstacle_callback(std_msgs::String *msg)
 {
+	syslog(LOG_NOTICE,"obstacle_callback():%s", msg->data.c_str());
 	sscanf(msg->data.c_str(), "v:%d:%d", &car_sensor.obstacle.distance, &car_sensor.obstacle.angle);
 	if (car_sensor.obstacle.distance > 0) {
 		car_sensor.obstacle.found = 1;
@@ -152,7 +157,7 @@ void usr_task2(void)
 	syslog(LOG_NOTICE,"========Activate user task2========");
 	int argc = 0;
 	char *argv = NULL;
-	ros::init(argc,argv,"vehicle_sensor");
+	ros::init(argc,argv,"vehicle_controller_sensing");
 	ros::NodeHandle n;
 	ros::Subscriber sub;
 
