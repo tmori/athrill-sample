@@ -1,0 +1,29 @@
+MROS_DIR := ../../../../../mros_latest/mROS/mros-lib
+SRCDIR	 := ../../../../../mros/asp-athrill-mbed/asp-arm-athrill
+ATHRILL_MBED_LIB := ../../../../../mros/asp-athrill-mbed/mbed-lib
+ATHRILL_DIR := ../../../../../athrill/trunk/apl
+
+OS_DIR =$(SRCDIR)
+TARGET_DEVICE := gr_peach_gcc
+OS_INCLUDES := -I$(OS_DIR)/include
+OS_INCLUDES += -I$(OS_DIR)
+OS_INCLUDES += -I$(OS_DIR)/arch
+OS_INCLUDES += -I$(OS_DIR)/arch/arm_gcc/common
+OS_INCLUDES += -I$(OS_DIR)/target/$(TARGET_DEVICE)
+OS_INCLUDES += -I$(ATHRILL_DIR)/include
+
+#INCLUDES := -I../../asp_mbed/asp-gr_peach_gcc-mbed/mbed-lib/common
+
+MBD_INCLUDES := -I$(ATHRILL_MBED_LIB)/EthernetInterface/lwip
+MBD_INCLUDES += -I$(ATHRILL_MBED_LIB)/EthernetInterface/lwip/include
+MBD_INCLUDES += -I$(ATHRILL_MBED_LIB)/EthernetInterface/lwip-athrill/include
+MBD_INCLUDES += -I$(ATHRILL_MBED_LIB)/EthernetInterface/lwip-sys
+MBD_INCLUDES += -I$(ATHRILL_MBED_LIB)/EthernetInterface/lwip/include/ipv4
+MBD_INCLUDES += -I$(ATHRILL_MBED_LIB)/mbed-src/api
+MBD_INCLUDES += -I$(ATHRILL_MBED_LIB)/EthernetInterface
+MBD_INCLUDES += -I$(ATHRILL_MBED_LIB)/EthernetInterface/Socket
+INCLUDES += $(MBD_INCLUDES)
+
+CDEFS	:= -DTARGET_ATHRILL
+CDEFS	+= -DLWIP_TRANSPORT_ETHERNET
+

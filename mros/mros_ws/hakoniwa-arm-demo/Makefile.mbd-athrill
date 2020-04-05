@@ -1,0 +1,112 @@
+GCC_BIN =
+LIB = libmbed
+PROJECT = GR-PEACH_mbed
+
+MY_INCLUDES := $(OS_INCLUDES) $(MBD_INCLUDES)
+
+C_OBJ := $(ATHRILL_MBED_LIB)/EthernetInterface/lwip-athrill/lwip-athrill.o
+CXX_OBJ := $(ATHRILL_MBED_LIB)/EthernetInterface/EthernetInterface.o
+CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/Endpoint.o
+CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/Socket.o
+CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/TCPSocketConnection.o
+CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/TCPSocketServer.o
+
+ALL_OBJ = $(ASM_OBJ) $(C_OBJ) $(CXX_OBJ)
+
+LIBRARY_PATHS = 
+LIBRARIES = 
+
+LINKER_SCRIPT = $(MBED_LIB_DIR)/mbed-src/targets/cmsis/TARGET_RENESAS/TARGET_RZ_A1H/TOOLCHAIN_GCC_ARM/RZA1H.ld
+
+
+############################################################################### 
+ifneq ($(USE_TRUESTUDIO),true)
+AS      = $(GCC_BIN)arm-none-eabi-as
+CC      = $(GCC_BIN)arm-none-eabi-gcc
+CPP     = $(GCC_BIN)arm-none-eabi-g++
+LD      = $(GCC_BIN)arm-none-eabi-gcc
+OBJCOPY = $(GCC_BIN)arm-none-eabi-objcopy
+OBJDUMP = $(GCC_BIN)arm-none-eabi-objdump
+SIZE    = $(GCC_BIN)arm-none-eabi-size 
+AR = $(GCC_BIN)arm-none-eabi-ar
+NM = $(GCC_BIN)arm-none-eabi-nm
+RANLIB = $(GCC_BIN)arm-none-eabi-ranlib
+else
+AS      = arm-atollic-eabi-as
+CC      = arm-atollic-eabi-gcc
+CPP     = arm-atollic-eabi-g++
+LD      = arm-atollic-eabi-gcc
+OBJCOPY = arm-atollic-eabi-objcopy
+OBJDUMP = arm-atollic-eabi-objdump
+SIZE    = arm-atollic-eabi-size 
+AR = arm-atollic-eabi-ar
+NM = arm-atollic-eabi-nm
+RANLIB = arm-atollic-eabi-ranlib
+endif
+
+ifneq ($(USE_TRUESTUDIO),true)
+CPU = -mcpu=cortex-a9 -marm -mno-thumb-interwork -marm -march=armv7-a -mfpu=vfp3 -mfloat-abi=hard -mno-unaligned-access 
+else
+CPU = -mcpu=cortex-a9 -marm -marm -march=armv7-a -mfpu=vfp3 -mfloat-abi=hard -mno-unaligned-access 
+endif
+
+CC_FLAGS = $(CPU) $(MY_INCLUDES) $(CDEFS) -c -g -fno-common -fmessage-length=0 -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
+CC_FLAGS += -fno-exceptions -fno-builtin -ffunction-sections -fdata-sections -fno-delete-null-pointer-checks -fomit-frame-pointer
+CC_FLAGS += -MMD -MP
+
+CC_SYMBOLS = -DTARGET_FF_ARDUINO -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -DTARGET_CORTEX_A -DMBED_BUILD_TIMESTAMP=1458722901.8 -D__MBED__=1 -DTARGET_RENESAS -DTARGET_LIKE_MBED -D__MBED_CMSIS_RTOS_CA9 -D__EVAL -D__FPU_PRESENT -DTARGET_LIKE_CORTEX_A9 -D__CMSIS_RTOS -DTARGET_A9 -D__CORTEX_A9 -DARM_MATH_CA9  -D_DEBUG_HTTP_SERVER_H -DLWIP_DEBUG -DGRPEACH -DWOLFSSL_USER_SETTINGS -DWOLFSSL_LIB
+
+
+#LD_FLAGS = $(CPU) -Wl,--gc-sections --specs=nano.specs -u _printf_float -u _scanf_float -Wl,--wrap,main -Wl,-Map=$(PROJECT).map,--cref
+LD_FLAGS = $(CPU) -L/usr/lib/gcc/arm-none-eabi/4.9.3/fpu -L/usr/lib/arm-none-eabi/newlib/fpu -Wl,--gc-sections -nostartfiles  -u _printf_float -u _scanf_float -Wl,-Map=$(PROJECT).map,--cref
+# LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+
+ifeq ($(DEBUG), true)
+  CC_FLAGS += -DDEBUG -O0
+  ASM_FLAGS += -DDEBUG -O0 
+else
+  CC_FLAGS += -DNDEBUG -Os
+endif
+
+.PHONY: all clean
+
+all: $(LIB).a
+
+#clean:
+#	rm -f $(LIB).lib $(ALL_OBJ) $(DEPS)
+
+$(ASM_OBJ): %.o: %.S
+	$(CC) $(CPU) $(ASM_FLAGS) -c -x assembler-with-cpp -o $@ $<
+
+$(C_OBJ): %.o: %.c
+	$(CC)  $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu99   $(INCLUDE_PATHS) -o $@ $<
+
+$(CXX_OBJ): %.o: %.cpp
+	$(CPP) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 -fno-rtti $(INCLUDE_PATHS) -o $@ $<
+
+$(LIB).a: $(ALL_OBJ)
+	rm -f $(LIB).a
+	$(AR) -rcs $(LIB).a $(ALL_OBJ)
+	$(RANLIB) $(LIB).a
+
+#
+#  ASP繧ｫ繝ｼ繝阪Ν縺ｮ繝薙Ν繝峨↓髢｢縺吶ｋ縺昴�ｮ莉悶�ｮ繧ｪ繝励す繝ｧ繝ｳ
+#
+CLEAN_FILES += $(PROJECT).map $(APPLNAME).d
+DEPS += $(ALL_OBJ:.o=.d)
+-include $(DEPS)
+
+APPL_CFLAGS =
+APPL_LIBS = libmbed.a
+APPL_DIR = .
+
+INCLUDES += $(INCLUDE_PATHS) # MBED繝ｩ繧､繝悶Λ繝ｪ縺ｮ繝倥ャ繝�繝輔ぃ繧､繝ｫ繧偵い繝励Μ縺ｧ菴ｿ縺�
+COPTS += -mfpu=vfpv3 -mfloat-abi=hard
+#CDEFS += -DTOPPERS_OMIT_BSS_INIT -DTOPPERS_OMIT_DATA_INIT # ASP縺ｮ繧ｹ繧ｿ繝ｼ繝医い繝�繝励Ν繝ｼ繝√Φ縺ｧ縺ｯ蛻晄悄蛹門�ｦ逅�縺ｯ荳崎ｦ�
+CDEFS += -DGRPEACH
+
+APPL_CXXFLAGS += $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 -fno-rtti
+CXXLIBS += $(LD_SYS_LIBS)
+LDFLAGS += $(LD_FLAGS)
+LDSCRIPT = $(LINKER_SCRIPT)
