@@ -56,10 +56,23 @@ CC_FLAGS += -MMD -MP
 
 CC_SYMBOLS = -DTARGET_FF_ARDUINO -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -DTARGET_CORTEX_A -DMBED_BUILD_TIMESTAMP=1458722901.8 -D__MBED__=1 -DTARGET_RENESAS -DTARGET_LIKE_MBED -D__MBED_CMSIS_RTOS_CA9 -D__EVAL -D__FPU_PRESENT -DTARGET_LIKE_CORTEX_A9 -D__CMSIS_RTOS -DTARGET_A9 -D__CORTEX_A9 -DARM_MATH_CA9  -D_DEBUG_HTTP_SERVER_H -DLWIP_DEBUG -DGRPEACH -DWOLFSSL_USER_SETTINGS -DWOLFSSL_LIB
 
+ifndef GCC_PATH
+	GCC_PATH=/usr/lib
+endif
+ifeq ($(ATHRILL_BUILD_TARGET), mac)
+    LD_FLAGS := -L$(LIBS) $(GCC_PATH)/arm-none-eabi/newlib/fpu
+    LD_FLAGS += -L$(GCC_PATH)/lib/gcc/arm-none-eabi/9.2.1/arm/v5te/hard
+    LD_FLAGS += -L$(GCC_PATH)/arm-none-eabi/lib/arm/v5te/hard
+else
+ifeq ($(ATHRILL_BUILD_TARGET), ubuntu18)
+    LD_FLAGS := -L$(LIBS) $(GCC_PATH)/arm-none-eabi/newlib/hard
+    LD_FLAGS += -L$(GCC_PATH)/gcc/arm-none-eabi/6.3.1/hard
+else
+    LD_FLAGS := -L$(LIBS) $(GCC_PATH)/arm-none-eabi/newlib/fpu
+    LD_FLAGS += -L$(GCC_PATH)/gcc/arm-none-eabi/4.9.3/fpu
+endif
+endif
 
-#LD_FLAGS = $(CPU) -Wl,--gc-sections --specs=nano.specs -u _printf_float -u _scanf_float -Wl,--wrap,main -Wl,-Map=$(PROJECT).map,--cref
-#LD_FLAGS = $(CPU) -L/usr/lib/gcc/arm-none-eabi/4.9.3/fpu -L/usr/lib/arm-none-eabi/newlib/fpu -Wl,--gc-sections -nostartfiles  -u _printf_float -u _scanf_float -Wl,-Map=$(PROJECT).map,--cref
-LD_FLAGS = $(CPU) -L/usr/lib/gcc/arm-none-eabi/4.9.3/fpu -L/usr/lib/arm-none-eabi/newlib/fpu 
 LD_FLAGS += -Wl,--gc-sections -nostartfiles
 LD_FLAGS += -u _printf_float -u _scanf_float
 LD_FLAGS += -Wl,-Map=$(PROJECT).map,--cref
