@@ -25,12 +25,12 @@ extern "C" {
 /*
  * ipaddr of master
  */
-#define MROS_MASTER_IPADDR						"192.168.11.40"
+#define MROS_MASTER_IPADDR						"192.168.11.32"
 
 /*
  * ipaddr of self node
  */
-#define MROS_NODE_IPADDR						"192.168.11.40"
+#define MROS_NODE_IPADDR						"192.168.11.32"
 
 /*
  * subnet mask of self node

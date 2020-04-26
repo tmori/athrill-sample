@@ -22,11 +22,11 @@ extern "C" {
 /*
  * max name length of topic name
  */
-#define MROS_TOPIC_NAME_MAXLEN					50U
+#define MROS_TOPIC_NAME_MAXLEN					100U
 /*
  * max name length of topic type name
  */
-#define MROS_TOPIC_TYPENAME_MAXLEN				20U
+#define MROS_TOPIC_TYPENAME_MAXLEN				100U
 
 
 /**************************************
@@ -35,12 +35,12 @@ extern "C" {
 /*
  * num of max publish topic connectors
  */
-#define MROS_PUB_TOPIC_CONNECTOR_MAX_NUM		10U
+#define MROS_PUB_TOPIC_CONNECTOR_MAX_NUM		100U
 
 /*
  * num of max subscribe topic connectors
  */
-#define MROS_SUB_TOPIC_CONNECTOR_MAX_NUM		10U
+#define MROS_SUB_TOPIC_CONNECTOR_MAX_NUM		100U
 
 /*
  * max queue length of outer connection topic data buffering
