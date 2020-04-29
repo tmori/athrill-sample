@@ -62,7 +62,6 @@ include ../Makefile.mbd-athrill
 #
 #  mROSライブラリのビルド
 #
-include $(MROS_DIR)/Makefile.m
 include ../Makefile.mros
 
 #

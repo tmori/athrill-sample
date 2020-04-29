@@ -1,5 +1,7 @@
 MROS_LIB = libmros
 
+include ../Makefile.m
+
 ALL_MROS_OBJ = $(MROS_C_OBJ) $(MROS_CXX_OBJ)
 
 
