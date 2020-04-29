@@ -4,12 +4,13 @@ PROJECT = GR-PEACH_mbed
 
 MY_INCLUDES := $(OS_INCLUDES) $(MBD_INCLUDES)
 
-C_OBJ := $(ATHRILL_MBED_LIB)/EthernetInterface/lwip-athrill/lwip-athrill.o
-CXX_OBJ := $(ATHRILL_MBED_LIB)/EthernetInterface/EthernetInterface.o
-CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/Endpoint.o
-CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/Socket.o
-CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/TCPSocketConnection.o
-CXX_OBJ += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket/TCPSocketServer.o
+C_OBJ := lwip-athrill.o
+CXX_OBJ := EthernetInterface.o
+CXX_OBJ += Endpoint.o
+CXX_OBJ += Socket.o
+CXX_OBJ += TCPSocketConnection.o
+CXX_OBJ += TCPSocketServer.o
+
 
 ALL_OBJ = $(ASM_OBJ) $(C_OBJ) $(CXX_OBJ)
 
@@ -89,8 +90,6 @@ endif
 
 all: $(LIB).a
 
-#clean:
-#	rm -f libmbed.a $(LIB).a $(ALL_OBJ) $(DEPS)
 
 $(ASM_OBJ): %.o: %.S
 	$(CC) $(CPU) $(ASM_FLAGS) -c -x assembler-with-cpp -o $@ $<
@@ -109,13 +108,14 @@ $(LIB).a: $(ALL_OBJ)
 #
 #  ASP繧ｫ繝ｼ繝阪Ν縺ｮ繝薙Ν繝峨↓髢｢縺吶ｋ縺昴�ｮ莉悶�ｮ繧ｪ繝励す繝ｧ繝ｳ
 #
-CLEAN_FILES += $(PROJECT).map $(APPLNAME).d
-DEPS += $(ALL_OBJ:.o=.d)
--include $(DEPS)
+CLEAN_FILES += $(PROJECT).map 
 
 APPL_CFLAGS =
 APPL_LIBS = libmbed.a
-APPL_DIR = .
+APPLDIR := .
+APPLDIR += $(ATHRILL_MBED_LIB)/EthernetInterface/lwip-athrill
+APPLDIR += $(ATHRILL_MBED_LIB)/EthernetInterface
+APPLDIR += $(ATHRILL_MBED_LIB)/EthernetInterface/Socket
 
 INCLUDES += $(INCLUDE_PATHS) # MBED繝ｩ繧､繝悶Λ繝ｪ縺ｮ繝倥ャ繝�繝輔ぃ繧､繝ｫ繧偵い繝励Μ縺ｧ菴ｿ縺�
 COPTS += -mfpu=vfpv3 -mfloat-abi=hard
@@ -126,3 +126,4 @@ APPL_CXXFLAGS += $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu++98 -fno-rtti
 CXXLIBS += $(LD_SYS_LIBS)
 LDFLAGS += $(LD_FLAGS)
 LDSCRIPT = $(LINKER_SCRIPT)
+

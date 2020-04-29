@@ -7,8 +7,8 @@ all:
 #
 #  アプリケーションファイル
 #
-APPNAME = string_pubsub
-APPLDIR = string_pubsub mros_config mros_config/os/target/os_asp
+#APPNAME = string_pubsub
+#APPLDIR = string_pubsub mros_config mros_config/os/target/os_asp
 APPLNAME = app
 USE_CXX = true
 APPL_CFG = $(APPLNAME).cfg

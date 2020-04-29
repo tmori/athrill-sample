@@ -33,6 +33,13 @@ APPL_LIBS = $(MROS_LIB).a libmbed.a
 INCLUDES += $(MROS_INCLUDE_PATHS)  # MROSライブラリのヘッダファイルをアプリで使う
 INCLUDES += -I$(MROS_DIR)/../mros_ws/$(APPNAME)/include
 INCLUDES += -I$(MROS_DIR)/mros-msgs 
+INCLUDES += -I./mros_config
+INCLUDES += -I./mros_config/os/target/os_asp
+INCLUDES += -I./include
+
+APPLDIR += ./mros_config
+APPLDIR += ./mros_config/os/target/os_asp
+
 # INCLUDES += -I/opt/ros/kinetic/include -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/include/i386-linux-gnu
 
 genmsg: $(MSG_SETTING_JSON)
