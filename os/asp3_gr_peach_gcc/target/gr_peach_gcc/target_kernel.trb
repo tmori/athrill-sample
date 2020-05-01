@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+#
+#		パス2の生成スクリプトのターゲット依存部（GR-PEACH用）
+#
+#  $Id: target_kernel.trb 914 2018-03-07 10:16:16Z ertl-hiro $
+#
+
+#
+#  生成スクリプトのチップ依存部
+#
+IncludeTrb("chip_kernel.trb")
