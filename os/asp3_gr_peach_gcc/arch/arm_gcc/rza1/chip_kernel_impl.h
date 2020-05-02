@@ -59,7 +59,7 @@
 /*
  *  MMUの使用に関する設定
  */
-#define USE_ARM_MMU
+//#define USE_ARM_MMU
 #define USE_ARM_SSECTION
 
 /*

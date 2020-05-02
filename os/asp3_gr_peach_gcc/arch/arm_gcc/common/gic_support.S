@@ -107,7 +107,7 @@ ALABEL(irc_begin_int_errata_2)
 	ldr		r1, =GICC_PMR		/* 割込み発生前の割込み優先度を取得 */
 	ldr		r2, [r1]
 	str		r0, [r1]			/* 新しい割込み優先度マスクをセットする */
-	asm_data_sync_barrier r0	/* 割込み優先度マスクがセットされるのを待つ */
+	/* TODO asm_data_sync_barrier r0 */	/* 割込み優先度マスクがセットされるのを待つ */
 	str		r2, [sp]			/* irc_end_intで用いる情報を保存 */
 
 	/*

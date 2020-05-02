@@ -56,7 +56,7 @@ chip_initialize(void)
 	/*
 	 *  キャッシュをディスエーブル
 	 */
-	arm_disable_cache();
+	//arm_disable_cache();
 
 	/*
 	 *  コア依存の初期化
@@ -69,12 +69,12 @@ chip_initialize(void)
 	 *  Shareable属性のメモリ領域をキャッシュ有効にするには，SMPモード
 	 *  に設定されている必要がある．
 	 */
-	mpcore_enable_smp();
+	//mpcore_enable_smp();
 
 	/*
 	 *  キャッシュをイネーブル
 	 */
-	arm_enable_cache();
+	//arm_enable_cache();
 
 	/*
 	 *  GICのディストリビュータの初期化
@@ -89,8 +89,8 @@ chip_initialize(void)
 	/*
 	 *  分岐予測の無効化とイネーブル
 	 */
-	arm_invalidate_bp();
-	arm_enable_bp();
+	//arm_invalidate_bp();
+	//arm_enable_bp();
 }
 
 /*
@@ -155,6 +155,7 @@ config_int(INTNO intno, ATR intatr, PRI intpri)
 	gicd_config_group(intno, 1U);
 #endif /* TOPPERS_SAFEG_SECURE */
 
+#if 0
 	if (INTNO_IRQ0 <= intno && intno <= INTNO_IRQ7) {
 		uint16_t	reg;
 
@@ -163,6 +164,7 @@ config_int(INTNO intno, ATR intatr, PRI intpri)
 		reg |= ((intatr >> 2) << ((intno - INTNO_IRQ0) * 2));
 		sil_wrh_mem(RZA1_ICR1, reg);
 	}
+#endif
 
 	if ((intatr & TA_EDGE) != 0U) {
 #ifdef GIC_ARM11MPCORE

@@ -58,6 +58,7 @@
  *  0xe8000000 - 0xffffffff：I/O領域（384MB），予約領域を含む
  */
 
+#ifdef USE_ARM_MMU
 /*
  *  MMUへの設定属性（第1レベルディスクリプタ）
  */
@@ -83,6 +84,7 @@ ARM_MMU_CONFIG arm_memory_area[] = {
 const uint_t arm_tnum_memory_area
 					= sizeof(arm_memory_area) / sizeof(ARM_MMU_CONFIG);
 
+#endif
 /*
  *  低消費電力モードの初期化
  */
@@ -229,12 +231,12 @@ target_initialize(void)
 	/*
 	 *  低消費電力モードの初期化
 	 */
-	lowpower_initialize();
+	//lowpower_initialize();
 
 	/*
 	 *  汎用入出力ポートの初期化（ポート／ペリフェラル兼用ピンのアサインの設定）
 	 */
-	port_initialize();
+	//port_initialize();
 
 	/*
 	 *  ベクタテーブルの設定
@@ -244,12 +246,12 @@ target_initialize(void)
 	/*
 	 *  L2キャッシュコントローラ（PL310）の初期化
 	 */
-	pl310_initialize(0x0U, ~0x0U);
+	//pl310_initialize(0x0U, ~0x0U);
 
 	/*
 	 *  LEDを青色に点灯させる
 	 */
-	gr_peach_set_led(GR_PEACH_LED_BLUE, 1);
+	//gr_peach_set_led(GR_PEACH_LED_BLUE, 1);
 
 	/*
 	 *  SIOを初期化

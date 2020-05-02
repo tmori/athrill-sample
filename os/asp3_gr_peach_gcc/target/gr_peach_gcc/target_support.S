@@ -63,71 +63,15 @@
 	AGLOBAL(hardware_init_hook)
 ALABEL(hardware_init_hook)
 	/*
-	 *  内蔵RAMへのアクセス／書込み許可
+	 *  simulator init is nothing to do
 	 */
-	ldr		r2, =(RZA1_SYSCR3)
-	ldr		r0, =0x0f
-	strb	r0, [r2]		/* 内蔵保持用RAMのページ0〜3への書込み許可 */
-	ldrb	r0, [r2]		/* ダミーリード */
+	bx	lr
 
-	/*
-	 *  クロック関係の初期化
-	 *
-	 *  以下の設定とする．
-	 *		入力周波数：13.33MHz，CKIO：66.67MHz
-	 *		CPUクロック（Iφ）：400.00MHz
-	 *		画像処理クロック（Gφ）：266.67MHz
-	 *		内部バスクロック（Bφ）：133.33MHz
-	 *		周辺クロック1（P1φ）：66.67MHz
-	 *		周辺クロック0（P0φ）：33.33MHz
-	 */
-	
-	/*
-	 *  L2キャッシュのスタンバイモードをイネーブル（周波数変更時に必要）
-	 */
-	ldr		r2, =(PL310_POWER_CTRL)
-	ldr		r0, [r2]
-	orr		r0, r0, #0x01	/* スタンバイモードに */
-	str		r0, [r2]
+#ifdef TOPPERS_EXECUTE_ON_ROM  
+    ldr     r0, sf_boot
+loop:
+    b       loop
 
-ALABEL(set_frqcr)
-	/*
-	 *  CPUクロックを「×1倍」に（400MHz）
-	 */
-	ldr		r2, =(RZA1_FRQCR)
-	ldr		r0, =0x1035
-	strh	r0, [r2]
-	ldrh	r1, [r2]
-	cmp		r0, r1
-	bne		set_frqcr
-
-#ifdef TOPPERS_RZA1H
-	/*
-	 *  画像処理クロックを「×2/3」に（266.67MHz）
-	 */
-ALABEL(set_frqcr2)
-	ldr		r2, =(RZA1_FRQCR2)
-	ldr		r0, =0x0001
-	strh	r0, [r2]
-	ldrh	r1, [r2]
-	cmp		r0, r1
-	bne		set_frqcr2
-#endif /* TOPPERS_RZA1H */
-
-	/*
-	 *  ソフトウェアスタンバイ復帰中でなくなるまで待つ
-	 */
-wait_isbusy:
-	ldr		r2, =(RZA1_CPUSTS)
-	ldrb	r0, [r2]
-	tst		r0, #0x10
-	bne		wait_isbusy
-
-	/*
-	 *  L2キャッシュのスタンバイモードをディスエーブル
-	 */
-	ldr		r2, =(PL310_POWER_CTRL)
-	ldr		r0, [r2]
-	bfc		r0, #0, #1		/* スタンバイモードをディスエーブル */
-	str		r0, [r2]
-	bx		lr
+sf_boot: 
+    .word   boot_loader
+#endif /* TOPPERS_EXECUTE_ON_ROM   */

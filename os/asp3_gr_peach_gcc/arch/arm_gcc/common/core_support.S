@@ -215,12 +215,19 @@ ALABEL(dispatcher_0)
 	 *  て，toppers_asm_custom_idleを用意すればよい．
 	 */
 ALABEL(dispatcher_1)
+#if 1
+	msr		cpsr_c, #CPSR_SVC_MODE	/* 割込みを許可（スーパバイザモード）*/
+	wfi
+	nop
+	b		dispatcher_0
+#else
 #ifdef TOPPERS_CUSTOM_IDLE
 	toppers_asm_custom_idle
 #else /* TOPPERS_CUSTOM_IDLE */
 	msr		cpsr_c, #CPSR_SVC_MODE	/* 割込みを許可（スーパバイザモード）*/
 #endif /* TOPPERS_CUSTOM_IDLE */
 	b		dispatcher_1			/* 割込み待ち */
+#endif
 
 /*
  *  カーネルの終了処理の呼出し

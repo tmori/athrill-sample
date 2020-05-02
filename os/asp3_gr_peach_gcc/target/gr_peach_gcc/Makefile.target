@@ -19,7 +19,7 @@ TOOL = gcc
 #  する．
 #
 #EXECUTE_ON = ROM
-EXECUTE_ON = RAM
+EXECUTE_ON = ROM
 
 #
 #  ブートローダの組込み
