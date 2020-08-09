@@ -1,0 +1,227 @@
+Archive member included because of file (symbol)
+
+/usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-strlen.o)
+                              main.o (_strlen)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+INTROM           0x0000000000000000 0x0000000000080000 axrl
+INTRAM           0x0000000006ff7000 0x0000000000080000 axw
+INTMMAP          0x0000000007ff0000 0x0000000000080000 axw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD start.o
+LOAD vector.o
+LOAD interrupt.o
+LOAD interrupt_table.o
+LOAD timer.o
+LOAD interrupt_asm.o
+LOAD main.o
+LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libm.a
+LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a
+LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
+
+.vector         0x0000000000000000      0x7d0
+ *(.vectors)
+ .vectors       0x0000000000000000      0x7d0 vector.o
+                0x0000000000000000                __reset
+
+.text           0x00000000000007d0      0x982
+                0x00000000000007d0                __text = .
+                0x00000000000007d0                __tp = .
+ *(.text)
+ .text          0x00000000000007d0       0x30 start.o
+                0x00000000000007d0                _start
+ .text          0x0000000000000800        0x0 vector.o
+ .text          0x0000000000000800      0x1de interrupt.o
+                0x0000000000000878                _default_int_handler
+                0x000000000000088c                _x_enable_int
+                0x00000000000008fa                _x_clear_int
+                0x0000000000000966                _interrupt_handler
+ .text          0x00000000000009de      0x102 interrupt_table.o
+                0x0000000000000a0a                _register_interrupt_handler
+                0x0000000000000a84                _do_interrupt_handler
+ .text          0x0000000000000ae0      0x284 timer.o
+                0x0000000000000be2                _timer_init
+                0x0000000000000ca6                _timer_start
+                0x0000000000000d1e                _timer_stop
+ *fill*         0x0000000000000d64        0xc 
+ .text          0x0000000000000d70       0x90 interrupt_asm.o
+                0x0000000000000d70                _interrupt
+ .text          0x0000000000000e00      0x340 main.o
+                0x0000000000000f1e                _timer_interrupt_handler
+                0x0000000000000fc8                _main
+                0x0000000000001090                _bss_clear
+                0x00000000000010da                _data_init
+ .text          0x0000000000001140       0x12 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-strlen.o)
+                0x0000000000001140                _strlen
+                0x0000000000001152                _etext = .
+                0x0000000000001154                . = ALIGN (0x4)
+
+.rodata         0x0000000000001154       0x74
+ *(.rodata)
+ .rodata        0x0000000000001154       0x30 timer.o
+ .rodata        0x0000000000001184       0x44 main.o
+                0x00000000000011c8                . = ALIGN (0x4)
+
+.rosdata
+ *(.rosdata)
+                0x00000000000011c8                . = ALIGN (0x4)
+                0x00000000000011c8                __idata_start = .
+
+.data           0x0000000006ff7000        0x4 load address 0x00000000000011c8
+                0x0000000006ff7000                . = ALIGN (0x4)
+                0x0000000006ff7000                __data_start = .
+ *(.data)
+ .data          0x0000000006ff7000        0x0 start.o
+ .data          0x0000000006ff7000        0x0 vector.o
+ .data          0x0000000006ff7000        0x0 interrupt.o
+ .data          0x0000000006ff7000        0x0 interrupt_table.o
+ .data          0x0000000006ff7000        0x0 timer.o
+ .data          0x0000000006ff7000        0x0 interrupt_asm.o
+ .data          0x0000000006ff7000        0x4 main.o
+ .data          0x0000000006ff7004        0x0 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-strlen.o)
+                0x0000000006ff7004                . = ALIGN (0x4)
+                0x0000000006ff7004                _edata = .
+
+.sdata          0x0000000006ff7004        0x0 load address 0x00000000000011cc
+                0x0000000006ff7004                __sdata_start = .
+                0x0000000006fff004                PROVIDE (__gp, (. + 0x8000))
+ *(.sdata)
+                0x0000000006ff7004                _esdata = .
+                0x00000000000011cc                __idata_end = ((__idata_start + SIZEOF (.data)) + SIZEOF (.sdata))
+
+.bss            0x0000000006ff7004      0x610 load address 0x00000000000011cc
+                0x0000000006ff7004                . = ALIGN (0x4)
+                0x0000000006ff7004                __bss_start = .
+ *(.bss)
+ .bss           0x0000000006ff7004        0x0 start.o
+ .bss           0x0000000006ff7004        0x0 vector.o
+ .bss           0x0000000006ff7004        0x0 interrupt.o
+ .bss           0x0000000006ff7004      0x200 interrupt_table.o
+ .bss           0x0000000006ff7204        0x8 timer.o
+ .bss           0x0000000006ff720c        0x0 interrupt_asm.o
+ .bss           0x0000000006ff720c      0x408 main.o
+ .bss           0x0000000006ff7614        0x0 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-strlen.o)
+ *(COMMON)
+                0x0000000006ff7614                . = ALIGN (0x4)
+                0x0000000006ff7614                __bss_end = .
+
+.bss_noclr      0x0000000006ff7614      0x400 load address 0x00000000000011cc
+                0x0000000006ff7614                . = ALIGN (0x4)
+ *(.bss_noclr)
+ .bss_noclr     0x0000000006ff7614      0x400 main.o
+                0x0000000006ff7614                _stack_data
+                0x0000000006ff7a14                . = ALIGN (0x4)
+
+.mmap_section   0x0000000007ff0000        0x0
+                0x0000000007ff0000                . = ALIGN (0x4)
+ *(.mmap_section)
+                0x0000000007ff0000                . = ALIGN (0x4)
+
+.comment        0x0000000000000000       0x47
+ *(.comment)
+ .comment       0x0000000000000000       0x1e interrupt.o
+                                         0x1f (size before relaxing)
+ .comment       0x0000000000000000       0x1f interrupt_table.o
+ .comment       0x0000000000000000       0x1f timer.o
+ .comment       0x0000000000000000       0x1f main.o
+ .comment       0x000000000000001e       0x29 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-strlen.o)
+                                         0x2a (size before relaxing)
+
+.note.renesas   0x0000000000000000       0xc8
+ .note.renesas  0x0000000000000000       0xb4 start.o
+ .note.renesas  0x0000000000000000       0xb4 vector.o
+ .note.renesas  0x0000000000000000       0xb4 interrupt.o
+ .note.renesas  0x0000000000000000       0xb4 interrupt_table.o
+ .note.renesas  0x0000000000000000       0xb4 timer.o
+ .note.renesas  0x0000000000000000       0xb4 interrupt_asm.o
+ .note.renesas  0x0000000000000000       0xb4 main.o
+ .note.renesas  0x00000000000000b4       0x14 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-strlen.o)
+                                         0xb4 (size before relaxing)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x0000000000000000       0xe0
+ *(.debug_aranges)
+ .debug_aranges
+                0x0000000000000000       0x20 start.o
+ .debug_aranges
+                0x0000000000000020       0x20 vector.o
+ .debug_aranges
+                0x0000000000000040       0x20 interrupt.o
+ .debug_aranges
+                0x0000000000000060       0x20 interrupt_table.o
+ .debug_aranges
+                0x0000000000000080       0x20 timer.o
+ .debug_aranges
+                0x00000000000000a0       0x20 interrupt_asm.o
+ .debug_aranges
+                0x00000000000000c0       0x20 main.o
+
+.debug_pubnames
+ *(.debug_pubnames)
+OUTPUT(test_main.elf elf32-v850-rh850)
+
+.debug_line     0x0000000000000000      0x6da
+ .debug_line    0x0000000000000000       0x3f start.o
+ .debug_line    0x000000000000003f      0x3a2 vector.o
+ .debug_line    0x00000000000003e1       0x8d interrupt.o
+ .debug_line    0x000000000000046e       0x61 interrupt_table.o
+ .debug_line    0x00000000000004cf       0x9e timer.o
+ .debug_line    0x000000000000056d       0x6f interrupt_asm.o
+ .debug_line    0x00000000000005dc       0xfe main.o
+
+.debug_info     0x0000000000000000      0x950
+ .debug_info    0x0000000000000000       0x74 start.o
+ .debug_info    0x0000000000000074       0x75 vector.o
+ .debug_info    0x00000000000000e9      0x19d interrupt.o
+ .debug_info    0x0000000000000286       0xf5 interrupt_table.o
+ .debug_info    0x000000000000037b      0x202 timer.o
+ .debug_info    0x000000000000057d       0x7c interrupt_asm.o
+ .debug_info    0x00000000000005f9      0x357 main.o
+
+.debug_abbrev   0x0000000000000000      0x43d
+ .debug_abbrev  0x0000000000000000       0x14 start.o
+ .debug_abbrev  0x0000000000000014       0x14 vector.o
+ .debug_abbrev  0x0000000000000028       0xfd interrupt.o
+ .debug_abbrev  0x0000000000000125       0x8f interrupt_table.o
+ .debug_abbrev  0x00000000000001b4      0x116 timer.o
+ .debug_abbrev  0x00000000000002ca       0x14 interrupt_asm.o
+ .debug_abbrev  0x00000000000002de      0x15f main.o
+
+.debug_frame    0x0000000000000000      0x3cc
+ .debug_frame   0x0000000000000000       0xfc interrupt.o
+ .debug_frame   0x00000000000000fc       0x88 interrupt_table.o
+ .debug_frame   0x0000000000000184       0xf8 timer.o
+ .debug_frame   0x000000000000027c      0x130 main.o
+ .debug_frame   0x00000000000003ac       0x20 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-strlen.o)
+
+.debug_loc      0x0000000000000000      0x630
+ .debug_loc     0x0000000000000000      0x19c interrupt.o
+ .debug_loc     0x000000000000019c       0xc8 interrupt_table.o
+ .debug_loc     0x0000000000000264      0x1a8 timer.o
+ .debug_loc     0x000000000000040c      0x224 main.o
+
+.debug_str      0x0000000000000000      0x34f
+ .debug_str     0x0000000000000000      0x155 interrupt.o
+                                        0x17e (size before relaxing)
+ .debug_str     0x0000000000000155       0x63 interrupt_table.o
+                                        0x15d (size before relaxing)
+ .debug_str     0x00000000000001b8       0x83 timer.o
+                                        0x185 (size before relaxing)
+ .debug_str     0x000000000000023b      0x114 main.o
+                                        0x265 (size before relaxing)
